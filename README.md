@@ -1,1 +1,0 @@
-# JMA-Pitch-Deck-Presentation

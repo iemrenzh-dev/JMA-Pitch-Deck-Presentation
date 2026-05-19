@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JMA Onsite Events - Pitch Deck</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Export Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/libs/jszip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.min.js"></script>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          },
+          colors: {
+            jma: { blue: '#5B8DB8', dark: '#1A1A1A', light: '#F8F7F4' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #1A1A1A; overflow: hidden; }
+    
+    /* Presentation Specific Utilities */
+    .clip-diagonal-reverse { clip-path: polygon(25% 0, 100% 0, 100% 100%, 0 100%); }
+    
+    /* Native Keyframes for floating effects */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+    @keyframes pulse-slow {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .7; transform: scale(1.05); }
+    }
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 200% 50%; }
+    }
+
+    /* Assigning Keyframes */
+    .animate-float-slow { animation: float 6s ease-in-out infinite; }
+    .animate-float-medium { animation: float 4s ease-in-out infinite; }
+    .animate-float-fast { animation: float 3s ease-in-out infinite; }
+    .animate-pulse-slow { animation: pulse-slow 4s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+    .animate-gradient { animation: gradient 8s linear infinite; background-size: 200% auto; }
+
+    /* Base states for interactive entry animations */
+    .slide-item .animate-slide-up {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .slide-item .animate-slide-left {
+      opacity: 0;
+      transform: translateX(40px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .slide-item .animate-slide-right {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    /* Active states triggers for entering elements */
+    .slide-item.is-active .animate-slide-up,
+    .slide-item.is-active .animate-slide-left,
+    .slide-item.is-active .animate-slide-right {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+
+    /* Entrance Animation Delays */
+    .slide-item.is-active .animation-delay-200 { transition-delay: 200ms; }
+    .slide-item.is-active .animation-delay-300 { transition-delay: 300ms; }
+    .slide-item.is-active .animation-delay-400 { transition-delay: 400ms; }
+    .slide-item.is-active .animation-delay-500 { transition-delay: 500ms; }
+    .slide-item.is-active .animation-delay-600 { transition-delay: 600ms; }
+
+    /* Quick Exit: Zero delay when slide transitions out so text hides smoothly and quickly */
+    .slide-item:not(.is-active) .animate-slide-up,
+    .slide-item:not(.is-active) .animate-slide-left,
+    .slide-item:not(.is-active) .animate-slide-right {
+      transition-delay: 0ms !important;
+      transition-duration: 0.4s;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- GLOBAL PRESENTATION UI -->
+  <div id="global-ui" class="fixed inset-0 z-50 pointer-events-none flex flex-col justify-between p-6">
+    <!-- Top Bar -->
+    <div class="flex justify-between items-start w-full max-w-[1920px] mx-auto">
+      <!-- Progress Dots -->
+      <div id="progress-dots" class="flex gap-2 pointer-events-auto mt-2 ml-2">
+        <!-- Dots injected via JS -->
+      </div>
+      
+      <!-- Export / Download Menu -->
+      <div class="relative pointer-events-auto mr-2">
+        <button id="download-btn" class="w-10 h-10 rounded-full bg-[#1A1A1A]/80 backdrop-blur-md text-white flex items-center justify-center hover:bg-black transition-colors shadow-lg hover:scale-105">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" />
+          </svg>
+        </button>
+        <div id="download-menu" class="absolute top-12 right-0 bg-[#1A1A1A]/95 backdrop-blur-lg border border-white/10 rounded-xl shadow-2xl py-2 w-48 opacity-0 pointer-events-none transition-all duration-300 transform translate-y-[-10px]">
+          <button onclick="exportDeck('pdf')" class="w-full text-left px-5 py-3 text-sm text-white hover:bg-[#5B8DB8] transition-colors font-medium flex items-center gap-3">
+            <svg class="w-4 h-4 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+            Save as PDF
+          </button>
+          <button onclick="exportDeck('pptx')" class="w-full text-left px-5 py-3 text-sm text-white hover:bg-[#5B8DB8] transition-colors font-medium flex items-center gap-3">
+            <svg class="w-4 h-4 text-white/70" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>
+            Save as PPTX
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Navigation -->
+    <div class="flex justify-center pb-4 pointer-events-auto">
+      <div class="flex items-center gap-4">
+        <button id="btn-prev" class="w-10 h-10 rounded-full bg-[#1A1A1A]/90 backdrop-blur-md text-white flex items-center justify-center hover:bg-black transition-all shadow-xl hover:-translate-x-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+          </svg>
+        </button>
+        <div id="slide-counter" class="px-6 py-2.5 bg-white/95 backdrop-blur-md rounded-full text-xs font-bold tracking-widest text-[#1A1A1A] shadow-xl">
+          01 / 20
+        </div>
+        <button id="btn-next" class="w-10 h-10 rounded-full bg-[#1A1A1A]/90 backdrop-blur-md text-white flex items-center justify-center hover:bg-black transition-all shadow-xl hover:translate-x-1">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDES WRAPPER -->
+  <div id="slider" class="relative w-full h-screen overflow-hidden">
+    
+    <!-- SLIDE 01 -->
+    <div class="slide-item is-active absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-100 translate-y-0 scale-100 z-20 pointer-events-auto">
+      <div class="w-full h-screen relative overflow-hidden">
+        <div class="absolute inset-0">
+          <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=1920&q=100" alt="" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-r from-[#0a1628]/95 via-[#0a1628]/80 to-[#5B8DB8]/30"></div>
+        </div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-white/10 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-white/10 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="absolute top-1/4 right-1/4 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-[#5B8DB8]/30 to-transparent blur-3xl animate-pulse-slow"></div>
+        <div class="absolute bottom-1/4 left-1/3 w-[400px] h-[400px] rounded-full bg-gradient-to-tl from-[#7BA3C9]/20 to-transparent blur-3xl animate-float-slow"></div>
+        <div class="relative z-10 w-full h-full flex items-center">
+          <div class="w-full max-w-7xl mx-auto px-8 md:px-16">
+            <div class="max-w-3xl">
+              <div class="mb-8 animate-slide-up">
+                <div class="inline-flex items-center gap-4 px-6 py-3 bg-white/10 backdrop-blur-md rounded-full border border-white/20 hover:bg-white/20 transition-all duration-300 cursor-default">
+                  <img src="https://www.jmalogos.com/assets/jma_logo-Jw-0tIpM.png" alt="JMA" class="h-10 w-auto">
+                  <div class="h-6 w-px bg-white/30"></div>
+                  <span class="text-sm font-medium text-white tracking-wide">Onsite Events</span>
+                </div>
+              </div>
+              <h1 class="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-[0.95] mb-8 animate-slide-up animation-delay-200">Creating<br><span class="bg-gradient-to-r from-[#5B8DB8] via-[#7BA3C9] to-[#5B8DB8] bg-clip-text text-transparent animate-gradient">Memorable</span><br>Moments</h1>
+              <p class="text-xl md:text-2xl text-white/80 max-w-lg leading-relaxed animate-slide-up animation-delay-300">Thoughtful onsite experiences that elevate brands and create lasting connections.</p>
+              <div class="mt-12 flex items-center gap-6 animate-slide-up animation-delay-500">
+                <div class="flex items-center gap-4">
+                  <div class="w-16 h-1 bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] rounded-full"></div>
+                  <div class="w-8 h-1 bg-gradient-to-r from-[#7BA3C9] to-transparent rounded-full"></div>
+                </div>
+                <span class="text-sm font-medium tracking-widest text-white/60 uppercase">May 2026</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 02 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen bg-gradient-to-br from-[#1A1A1A] via-[#1A1A1A] to-[#2A3A4A] flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-white/10 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-white/10 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-[#5B8DB8]/20 to-transparent blur-3xl animate-pulse-slow"></div>
+        <div class="relative z-10 w-full max-w-5xl mx-auto px-8 md:px-16 text-center">
+          <p class="text-sm font-medium tracking-[0.4em] text-[#5B8DB8] uppercase mb-8 animate-slide-up">Our Philosophy</p>
+          <h2 class="text-4xl md:text-6xl lg:text-7xl font-light text-white leading-tight mb-12 animate-slide-up animation-delay-200">We believe every touchpoint is an opportunity to <span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent font-medium">tell a story</span></h2>
+          <div class="flex flex-wrap justify-center gap-4 animate-slide-up animation-delay-400">
+            <div class="group flex items-center gap-3 px-6 py-3 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 hover:border-[#5B8DB8]/50 hover:bg-[#5B8DB8]/10 transition-all duration-300 cursor-default">
+              <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+              <span class="text-white/80 font-light group-hover:text-white transition-colors">Creative Partner</span>
+            </div>
+            <div class="group flex items-center gap-3 px-6 py-3 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 hover:border-[#5B8DB8]/50 hover:bg-[#5B8DB8]/10 transition-all duration-300 cursor-default">
+              <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+              <span class="text-white/80 font-light group-hover:text-white transition-colors">Brand Experience</span>
+            </div>
+            <div class="group flex items-center gap-3 px-6 py-3 bg-white/5 backdrop-blur-sm rounded-full border border-white/10 hover:border-[#5B8DB8]/50 hover:bg-[#5B8DB8]/10 transition-all duration-300 cursor-default">
+              <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+              <span class="text-white/80 font-light group-hover:text-white transition-colors">Premium Execution</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 03 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full h-screen bg-[#F8F7F4] relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="w-full h-full grid lg:grid-cols-2">
+          <div class="relative h-full group overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1920&q=100" alt="Leather craftsmanship" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            <div class="absolute inset-0" style="background:linear-gradient(to right, rgba(91, 141, 184, 0.4), transparent)"></div>
+            <div class="absolute bottom-8 left-8 bg-white/95 backdrop-blur-sm px-6 py-4 shadow-2xl animate-slide-up animation-delay-400 transition-transform">
+              <p class="text-xs tracking-[0.2em] text-[#5B8DB8] uppercase mb-1">Experience 01</p>
+              <p class="text-xl font-semibold text-[#1A1A1A]">Leather Patch</p>
+            </div>
+          </div>
+          <div class="flex items-center justify-center px-8 lg:px-12 py-12 bg-gradient-to-br from-[#F8F7F4] to-[#EBE9E4]">
+            <div class="max-w-md w-full">
+              <h2 class="text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-4 leading-tight animate-slide-left">Leather Patch<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Customization</span></h2>
+              <p class="text-[#666666] leading-relaxed mb-6 text-base animate-slide-left animation-delay-200">Guests choose from custom shaped leather patches and personalize them with their name or initials, creating a unique branded keepsake on site.</p>
+              <div class="grid grid-cols-2 gap-2 animate-slide-left animation-delay-300">
+                <div class="group p-3 bg-white border-l-2 border-[#5B8DB8] hover:shadow-md transition-all duration-300">
+                  <p class="text-xs tracking-widest text-[#999999] uppercase mb-1">Styles</p>
+                  <p class="font-semibold text-[#1A1A1A] text-sm">Curated Options</p>
+                </div>
+                <div class="group p-3 bg-white border-l-2 border-[#5B8DB8] hover:shadow-md transition-all duration-300">
+                  <p class="text-xs tracking-widest text-[#999999] uppercase mb-1">Inventory</p>
+                  <p class="font-semibold text-[#1A1A1A] text-sm">Fully Managed</p>
+                </div>
+                <div class="group p-3 bg-white border-l-2 border-[#5B8DB8] hover:shadow-md transition-all duration-300">
+                  <p class="text-xs tracking-widest text-[#999999] uppercase mb-1">Branding</p>
+                  <p class="font-semibold text-[#1A1A1A] text-sm">Debossed Logo</p>
+                </div>
+                <div class="group p-3 bg-white border-l-2 border-[#5B8DB8] hover:shadow-md transition-all duration-300">
+                  <p class="text-xs tracking-widest text-[#999999] uppercase mb-1">Staffing</p>
+                  <p class="font-semibold text-[#1A1A1A] text-sm">Experts Included</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 04 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full h-screen relative overflow-hidden">
+        <div class="absolute inset-0">
+          <img src="https://images.pexels.com/photos/8764399/pexels-photo-8764399.jpeg?w=1920&q=100" alt="Custom shoes" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-l from-[#5B8DB8]/95 via-[#5B8DB8]/80 to-[#5B8DB8]/60"></div>
+        </div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-white/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-white/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full h-full flex items-center justify-center">
+          <div class="max-w-2xl text-center px-8">
+            <div class="inline-block px-5 py-2.5 bg-white/20 backdrop-blur-sm rounded-full mb-6 animate-slide-up hover:bg-white/30 transition-colors cursor-default">
+              <span class="text-sm font-medium text-white tracking-wider">02 / Experience</span>
+            </div>
+            <h2 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight animate-slide-up animation-delay-200">Custom Shoe<br>Activation</h2>
+            <p class="text-white/90 text-lg leading-relaxed mb-10 animate-slide-up animation-delay-300">Live customization gives guests the opportunity to personalize their footwear with curated design elements for a one-of-a-kind experience.</p>
+            <div class="flex justify-center gap-8 animate-slide-up animation-delay-400">
+              <div class="text-center group cursor-default">
+                <div class="w-14 h-14 mx-auto mb-3 rounded-full bg-white flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
+                  <span class="text-xl font-bold text-[#5B8DB8]">1</span>
+                </div>
+                <p class="text-sm text-white font-medium">Try On</p>
+              </div>
+              <div class="text-center group cursor-default">
+                <div class="w-14 h-14 mx-auto mb-3 rounded-full bg-white flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
+                  <span class="text-xl font-bold text-[#5B8DB8]">2</span>
+                </div>
+                <p class="text-sm text-white font-medium">Customize</p>
+              </div>
+              <div class="text-center group cursor-default">
+                <div class="w-14 h-14 mx-auto mb-3 rounded-full bg-white flex items-center justify-center group-hover:scale-110 group-hover:shadow-lg transition-all duration-300">
+                  <span class="text-xl font-bold text-[#5B8DB8]">3</span>
+                </div>
+                <p class="text-sm text-white font-medium">Take Home</p>
+              </div>
+            </div>
+            <div class="mt-10 pt-6 border-t border-white/20 animate-slide-up animation-delay-500">
+              <p class="text-sm text-white/70">Seamless execution for events of 100+ participants.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 05 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full h-screen bg-gradient-to-br from-[#F8F7F4] via-[#F8F7F4] to-[#E5E3DE] relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="w-full h-full grid lg:grid-cols-2">
+          <div class="flex items-center justify-center px-8 lg:px-12 py-12">
+            <div class="max-w-md">
+              <span class="inline-block text-6xl font-bold bg-gradient-to-b from-[#5B8DB8]/30 to-transparent bg-clip-text text-transparent mb-4 animate-slide-up">03</span>
+              <h2 class="text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-4 animate-slide-up animation-delay-200">Custom Scented <span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Candle</span></h2>
+              <p class="text-base text-[#666666] mb-8 animate-slide-up animation-delay-300">Create personalized candles by selecting from curated scents, vessel styles, and branded design elements.</p>
+              <div class="space-y-3 animate-slide-up animation-delay-400">
+                <div class="group flex items-start gap-4 p-4 bg-white rounded-xl hover:shadow-lg transition-all duration-300">
+                  <div class="w-10 h-10 rounded-full bg-[#5B8DB8]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#5B8DB8] transition-all duration-300">
+                    <span class="text-lg font-bold text-[#5B8DB8] group-hover:text-white transition-colors duration-300">1</span>
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-[#1A1A1A]">Pick a Scent</h3>
+                    <p class="text-sm text-[#666666]">Choose from our curated fragrance collection</p>
+                  </div>
+                </div>
+                <div class="group flex items-start gap-4 p-4 bg-white rounded-xl hover:shadow-lg transition-all duration-300">
+                  <div class="w-10 h-10 rounded-full bg-[#5B8DB8]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#5B8DB8] transition-all duration-300">
+                    <span class="text-lg font-bold text-[#5B8DB8] group-hover:text-white transition-colors duration-300">2</span>
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-[#1A1A1A]">Make Your Candle</h3>
+                    <p class="text-sm text-[#666666]">Create a personalized vessel</p>
+                  </div>
+                </div>
+                <div class="group flex items-start gap-4 p-4 bg-white rounded-xl hover:shadow-lg transition-all duration-300">
+                  <div class="w-10 h-10 rounded-full bg-[#5B8DB8]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#5B8DB8] transition-all duration-300">
+                    <span class="text-lg font-bold text-[#5B8DB8] group-hover:text-white transition-colors duration-300">3</span>
+                  </div>
+                  <div>
+                    <h3 class="font-bold text-[#1A1A1A]">Take Home</h3>
+                    <p class="text-sm text-[#666666]">Enjoy your unique creation</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="relative h-full overflow-hidden animate-slide-left animation-delay-300">
+            <img src="https://images.unsplash.com/photo-1603006905003-be475563bc59?w=1920&q=100" alt="Candle making" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-l from-transparent to-[#F8F7F4]/20"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 06 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen relative overflow-hidden">
+        <div class="absolute inset-0">
+          <img src="https://images.pexels.com/photos/32073510/pexels-photo-32073510.jpeg?w=1920&q=100" alt="Hat activation" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/95 via-[#1A1A1A]/80 to-[#1A1A1A]/40"></div>
+        </div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-white/10 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-white/10 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full min-h-screen flex items-center">
+          <div class="w-full max-w-7xl mx-auto px-8 md:px-16">
+            <div class="max-w-xl">
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6 animate-slide-right">Experience 04</p>
+              <h2 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight animate-slide-right animation-delay-200">Onsite Hat<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Activation</span></h2>
+              <p class="text-white/80 text-xl leading-relaxed mb-10 animate-slide-right animation-delay-300">Personalize hats on site with curated design elements, branded details, or custom enhancements for a one-of-a-kind experience.</p>
+              <div class="space-y-4 animate-slide-right animation-delay-400">
+                <div class="group flex items-start gap-4 cursor-default">
+                  <div class="w-3 h-3 mt-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <p class="text-white/70 group-hover:text-white transition-colors">Choose desired style, color, and quantity</p>
+                </div>
+                <div class="group flex items-start gap-4 cursor-default">
+                  <div class="w-3 h-3 mt-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <p class="text-white/70 group-hover:text-white transition-colors">Option to feature your brand's logo debossed</p>
+                </div>
+                <div class="group flex items-start gap-4 cursor-default">
+                  <div class="w-3 h-3 mt-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <p class="text-white/70 group-hover:text-white transition-colors">Seamless experience from setup to breakdown</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 07 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen bg-gradient-to-br from-[#F8F7F4] via-[#F8F7F4] to-[#E5E3DE] relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full min-h-screen flex items-center">
+          <div class="w-full max-w-7xl mx-auto px-8 md:px-16 grid lg:grid-cols-2 gap-16 items-center">
+            <div class="py-20">
+              <div class="flex items-center gap-4 mb-8 animate-slide-right">
+                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center shadow-lg">
+                  <span class="text-sm font-bold text-white">05</span>
+                </div>
+                <span class="text-sm font-medium tracking-widest text-[#999999] uppercase">Experience</span>
+              </div>
+              <h2 class="text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-6 leading-tight animate-slide-right animation-delay-200">Sunglasses<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Experience</span></h2>
+              <p class="text-[#666666] text-lg leading-relaxed mb-10 animate-slide-right animation-delay-300">Personalize premium eyewear on site with curated branded details and unique style elements for a one-of-a-kind keepsake.</p>
+              <div class="grid grid-cols-2 gap-3 animate-slide-right animation-delay-400">
+                <div class="group flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span class="text-sm font-medium text-[#1A1A1A]">Styles Curated</span>
+                </div>
+                <div class="group flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span class="text-sm font-medium text-[#1A1A1A]">Inventory Planned</span>
+                </div>
+                <div class="group flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span class="text-sm font-medium text-[#1A1A1A]">Branding Optional</span>
+                </div>
+                <div class="group flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span class="text-sm font-medium text-[#1A1A1A]">Staffing Included</span>
+                </div>
+              </div>
+            </div>
+            <div class="relative animate-slide-left animation-delay-300">
+              <div class="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl group">
+                <img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=1920&q=100" alt="Sunglasses" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+              </div>
+              <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] rounded-xl -z-10"></div>
+              <div class="absolute -top-6 -left-6 w-24 h-24 border-2 border-[#5B8DB8]/30 rounded-xl -z-10"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 08 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full h-screen relative overflow-hidden">
+        <div class="absolute inset-0">
+          <img src="https://images.pexels.com/photos/5760878/pexels-photo-5760878.jpeg?w=1920&q=100" alt="Fragrance experience" class="w-full h-full object-cover object-center">
+          <div class="absolute inset-0 bg-gradient-to-t from-[#F8F7F4] via-[#F8F7F4]/60 to-transparent"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-[#5B8DB8]/20 to-transparent"></div>
+        </div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full h-full flex items-end justify-center pb-12 px-8">
+          <div class="bg-white/95 backdrop-blur-sm p-8 lg:p-10 shadow-2xl rounded-2xl max-w-4xl w-full">
+            <div class="grid lg:grid-cols-2 gap-8 items-center">
+              <div>
+                <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-3 animate-slide-right">Experience 06</p>
+                <h2 class="text-2xl lg:text-3xl font-bold text-[#1A1A1A] mb-4 leading-tight animate-slide-right animation-delay-200">Custom Fragrance<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Experience</span></h2>
+                <p class="text-[#666666] text-sm leading-relaxed animate-slide-right animation-delay-300">Create a signature scent by blending curated notes into a personalized fragrance that reflects individual style.</p>
+              </div>
+              <div class="space-y-3 animate-slide-left animation-delay-400">
+                <div class="group flex items-center gap-3 cursor-default">
+                  <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+                    <span class="text-sm font-bold text-white">1</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-[#1A1A1A] text-sm group-hover:text-[#5B8DB8] transition-colors">Scent Selection</p>
+                    <p class="text-xs text-[#666666]">Choose from curated fragrance notes</p>
+                  </div>
+                </div>
+                <div class="group flex items-center gap-3 cursor-default">
+                  <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+                    <span class="text-sm font-bold text-white">2</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-[#1A1A1A] text-sm group-hover:text-[#5B8DB8] transition-colors">Custom Blending</p>
+                    <p class="text-xs text-[#666666]">Create your unique combination</p>
+                  </div>
+                </div>
+                <div class="group flex items-center gap-3 cursor-default">
+                  <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+                    <span class="text-sm font-bold text-white">3</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-[#1A1A1A] text-sm group-hover:text-[#5B8DB8] transition-colors">Take Home Gift</p>
+                    <p class="text-xs text-[#666666]">Personalized bottle to keep</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 09 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen relative overflow-hidden">
+        <div class="absolute inset-0">
+          <img src="https://instagram.fcrk3-3.fna.fbcdn.net/v/t51.82787-15/690311927_18597149866024145_8642498146654590202_n.jpg?stp=dst-jpg_e35_p1080x1080_tt6&_nc_cat=111&ig_cache_key=Mzg5NjIxOTc4MzY1NzgwNjUyMQ%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTQ0MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=tQZYXKBATrcQ7kNvwHs8jC3&_nc_oc=AdplOTU0XLtuQRIQkH-GJfsyXMySnEUGmBxCPPe87gkAL95p7XvAWWHbwWGdFlFu5uo&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcrk3-3.fna&_nc_gid=8zXsFOcloNgQXGblHqOasA&_nc_ss=7a22e&oh=00_Af4bJxh66VtNb28WFqUsOMLEJVAZsJ9GtyzZ4AWPDcYF4A&oe=6A125311" alt="Jewelry experience" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-r from-[#5B8DB8]/95 via-[#5B8DB8]/85 to-[#4A7CA6]/70"></div>
+        </div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-white/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-white/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full min-h-screen flex items-center">
+          <div class="w-full max-w-6xl mx-auto px-8 md:px-16 py-20">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+              <div class="animate-slide-right">
+                <div class="inline-flex items-center gap-3 mb-8">
+                  <span class="text-6xl font-bold text-white/30">07</span>
+                  <span class="text-sm font-medium tracking-widest text-white/70 uppercase">Experience</span>
+                </div>
+                <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">Kendra Scott<br>Luxury Gifting</h2>
+                <p class="text-white/90 text-lg leading-relaxed mb-10">Design personalized pieces through curated charms, engravings, or bespoke design elements, creating a meaningful take-home keepsake.</p>
+                <div class="flex flex-wrap gap-3">
+                  <div class="group px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 hover:border-white/40 transition-all duration-300">
+                    <span class="text-sm text-white font-medium">Try on styles</span>
+                  </div>
+                  <div class="group px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 hover:border-white/40 transition-all duration-300">
+                    <span class="text-sm text-white font-medium">Get guidance</span>
+                  </div>
+                  <div class="group px-6 py-3 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 hover:border-white/40 transition-all duration-300">
+                    <span class="text-sm text-white font-medium">Take home item</span>
+                  </div>
+                </div>
+              </div>
+              <div class="relative animate-slide-left animation-delay-300">
+                <div class="aspect-square bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden group p-3 shadow-2xl">
+                  <img src="https://instagram.fcrk3-3.fna.fbcdn.net/v/t51.82787-15/690311927_18597149866024145_8642498146654590202_n.jpg?stp=dst-jpg_e35_p1080x1080_tt6&_nc_cat=111&ig_cache_key=Mzg5NjIxOTc4MzY1NzgwNjUyMQ%3D%3D.3-ccb7-5&ccb=7-5&_nc_sid=58cdad&efg=eyJ2ZW5jb2RlX3RhZyI6IkNBUk9VU0VMX0lURU0ueHBpZHMuMTQ0MC5zZHIucmVndWxhcl9waG90by5DMyJ9&_nc_ohc=tQZYXKBATrcQ7kNvwHs8jC3&_nc_oc=AdplOTU0XLtuQRIQkH-GJfsyXMySnEUGmBxCPPe87gkAL95p7XvAWWHbwWGdFlFu5uo&_nc_ad=z-m&_nc_cid=0&_nc_zt=23&_nc_ht=instagram.fcrk3-3.fna&_nc_gid=8zXsFOcloNgQXGblHqOasA&_nc_ss=7a22e&oh=00_Af4bJxh66VtNb28WFqUsOMLEJVAZsJ9GtyzZ4AWPDcYF4A&oe=6A125311" alt="Jewelry" class="w-full h-full object-cover rounded-xl opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 10 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-white/10 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-white/10 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 py-20">
+          <div class="grid lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-gradient-to-br from-[#2A2A2A] to-[#1A1A1A] p-8 lg:p-12 rounded-2xl border border-white/10 animate-slide-right">
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 08</p>
+              <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">Onsite<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Engraving</span></h2>
+              <p class="text-white/70 text-lg leading-relaxed mb-10 max-w-xl">Personalize premium products with custom names, initials, or meaningful details, creating a unique keepsake in real time.</p>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
+                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Efficiency</p>
+                  <p class="text-sm text-white/50">Multiple engravers per event</p>
+                </div>
+                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
+                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Expertise</p>
+                  <p class="text-sm text-white/50">Professional artisans onsite</p>
+                </div>
+                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
+                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Pre-Plan</p>
+                  <p class="text-sm text-white/50">Sandblasted logos available</p>
+                </div>
+                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
+                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Turnkey</p>
+                  <p class="text-sm text-white/50">Fully managed setup</p>
+                </div>
+              </div>
+            </div>
+            <div class="relative rounded-2xl overflow-hidden animate-slide-left animation-delay-300 group">
+              <img src="https://images.pexels.com/photos/7254467/pexels-photo-7254467.jpeg?w=1920&q=100" alt="Engraving" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+              <div class="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/80 to-transparent"></div>
+              <div class="absolute bottom-6 left-6 right-6">
+                <p class="text-sm tracking-widest text-white/70 uppercase">Live Engraving</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 11 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full h-screen bg-[#F8F7F4] relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="w-full h-full grid lg:grid-cols-2">
+          <div class="relative h-full group overflow-hidden">
+            <img src="https://www.harimari.com/cdn/shop/collections/Mega_Nav_Men-01.png?v=1778272480&width=2048?w=1920&q=100" alt="Hari Mari sandals" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent to-[#F8F7F4]/20"></div>
+            <div class="absolute top-8 left-8 bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] text-white px-5 py-2.5 rounded-full shadow-lg hover:scale-105 transition-transform cursor-default z-10">
+              <p class="text-sm font-medium tracking-wider">Premium Fitting</p>
+            </div>
+          </div>
+          <div class="flex items-center px-8 lg:px-12 py-10 bg-gradient-to-br from-[#F8F7F4] to-[#EBE9E4]">
+            <div class="max-w-md w-full">
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-4 animate-slide-left">Experience 09</p>
+              <h2 class="text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-4 leading-tight animate-slide-left animation-delay-200">Hari Mari<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Fitting</span></h2>
+              <p class="text-[#666666] text-base leading-relaxed mb-6 animate-slide-left animation-delay-300">Personalized sizing and premium sandal selection, ensuring both comfort and style through a tailored fitting process.</p>
+              <div class="space-y-2 animate-slide-left animation-delay-400">
+                <div class="group flex justify-between py-3 border-b border-[#E5E3DE] hover:border-[#5B8DB8] transition-colors cursor-default">
+                  <span class="text-[#666666] text-sm group-hover:text-[#1A1A1A] transition-colors">Styles</span>
+                  <span class="font-semibold text-[#1A1A1A] text-sm group-hover:text-[#5B8DB8] transition-colors">Curated Selection</span>
+                </div>
+                <div class="group flex justify-between py-3 border-b border-[#E5E3DE] hover:border-[#5B8DB8] transition-colors cursor-default">
+                  <span class="text-[#666666] text-sm group-hover:text-[#1A1A1A] transition-colors">Fitting</span>
+                  <span class="font-semibold text-[#1A1A1A] text-sm group-hover:text-[#5B8DB8] transition-colors">Expert Guidance</span>
+                </div>
+                <div class="group flex justify-between py-3 border-b border-[#E5E3DE] hover:border-[#5B8DB8] transition-colors cursor-default">
+                  <span class="text-[#666666] text-sm group-hover:text-[#1A1A1A] transition-colors">Lead Time</span>
+                  <span class="font-semibold text-[#1A1A1A] text-sm group-hover:text-[#5B8DB8] transition-colors">2-3 weeks</span>
+                </div>
+                <div class="group flex justify-between py-3 border-b border-[#E5E3DE] hover:border-[#5B8DB8] transition-colors cursor-default">
+                  <span class="text-[#666666] text-sm group-hover:text-[#1A1A1A] transition-colors">Product Overage</span>
+                  <span class="font-semibold text-[#1A1A1A] text-sm group-hover:text-[#5B8DB8] transition-colors">20% recommended</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 12 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen relative overflow-hidden">
+        <div class="absolute inset-0">
+          <img src="https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=1920&q=100" alt="Jewelry bar" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-br from-[#5B8DB8]/95 via-[#5B8DB8]/85 to-[#4A7CA6]/90"></div>
+        </div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-white/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-white/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full min-h-screen flex items-center justify-center">
+          <div class="w-full max-w-6xl mx-auto px-8 md:px-16 py-20">
+            <div class="text-center mb-16">
+              <span class="inline-block text-sm font-medium tracking-[0.3em] text-white/70 uppercase mb-4 animate-slide-up">Experience 10</span>
+              <h2 class="text-4xl md:text-6xl font-bold text-white mb-6 animate-slide-up animation-delay-200">Jewelry Bar</h2>
+              <p class="text-xl text-white/90 max-w-2xl mx-auto animate-slide-up animation-delay-300">Create personalized bracelets using curated colors, charms, and meaningful design elements that reflect connection and team spirit.</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-6 animate-slide-up animation-delay-400">
+              <div class="group bg-white/10 backdrop-blur-sm p-8 rounded-2xl text-center border border-white/20 hover:bg-white/20 hover:scale-105 transition-all duration-300 cursor-default">
+                <p class="text-5xl font-bold text-white mb-2 group-hover:scale-110 transition-transform">6-10</p>
+                <p class="text-white/80">Color Options</p>
+              </div>
+              <div class="group bg-white/10 backdrop-blur-sm p-8 rounded-2xl text-center border border-white/20 hover:bg-white/20 hover:scale-105 transition-all duration-300 cursor-default">
+                <p class="text-5xl font-bold text-white mb-2 group-hover:scale-110 transition-transform">500+</p>
+                <p class="text-white/80">Minimum Participants</p>
+              </div>
+              <div class="group bg-white/10 backdrop-blur-sm p-8 rounded-2xl text-center border border-white/20 hover:bg-white/20 hover:scale-105 transition-all duration-300 cursor-default">
+                <p class="text-5xl font-bold text-white mb-2 group-hover:scale-110 transition-transform">100+</p>
+                <p class="text-white/80">Charm Options</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 13 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen bg-gradient-to-br from-[#F8F7F4] to-[#EBE9E4] flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 py-20">
+          <div class="grid lg:grid-cols-5 gap-12 items-center">
+            <div class="lg:col-span-2 animate-slide-right w-full">
+              <div class="inline-flex items-center gap-3 mb-6">
+                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center shadow-lg">
+                  <span class="text-sm font-bold text-white">11</span>
+                </div>
+                <span class="text-sm font-medium tracking-widest text-[#999999] uppercase">Experience</span>
+              </div>
+              <h2 class="text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-6 leading-tight">Sock<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Bar</span></h2>
+              <p class="text-[#666666] text-lg leading-relaxed mb-8">Personalize socks on site with unique embellishments like patches, heat transfers, and branded design elements.</p>
+              <div class="space-y-3 mb-8">
+                <div class="group flex items-center gap-3 text-[#666666] hover:text-[#1A1A1A] transition-colors cursor-default">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span>Two team members included</span>
+                </div>
+                <div class="group flex items-center gap-3 text-[#666666] hover:text-[#1A1A1A] transition-colors cursor-default">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span>6 unique design options</span>
+                </div>
+                <div class="group flex items-center gap-3 text-[#666666] hover:text-[#1A1A1A] transition-colors cursor-default">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span>Custom signage provided</span>
+                </div>
+                <div class="group flex items-center gap-3 text-[#666666] hover:text-[#1A1A1A] transition-colors cursor-default">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span>Minimum 100 participants</span>
+                </div>
+              </div>
+              <div class="inline-block p-6 bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-default">
+                <p class="text-white/80 text-sm mb-1">Experience</p>
+                <p class="text-2xl font-bold text-white">Fully Turnkey</p>
+              </div>
+            </div>
+            <div class="lg:col-span-3 relative animate-slide-left animation-delay-300">
+              <div class="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl group">
+                <img src="https://images.pexels.com/photos/15195444/pexels-photo-15195444.jpeg?w=1920&q=100" alt="Sock bar" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+              </div>
+              <div class="absolute -bottom-4 -left-4 w-24 h-24 bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] rounded-xl -z-10"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 14 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen relative overflow-hidden">
+        <div class="absolute inset-0">
+          <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=100" alt="Apparel pop-up" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/95 via-[#1A1A1A]/80 to-transparent"></div>
+        </div>
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-br from-[#5B8DB8]/80 to-[#4A7CA6]/80 clip-diagonal-reverse"></div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-white/10 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-white/10 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full min-h-screen flex items-center">
+          <div class="w-full max-w-6xl mx-auto px-8 md:px-16 py-20">
+            <div class="max-w-2xl">
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6 animate-slide-right">Experience 12</p>
+              <h2 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight animate-slide-right animation-delay-200">Onsite Apparel<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Pop-Up</span></h2>
+              <p class="text-white/80 text-xl leading-relaxed mb-12 animate-slide-right animation-delay-300">An immersive retail-inspired setting where guests explore and select curated branded apparel.</p>
+              <div class="grid sm:grid-cols-2 gap-4 animate-slide-right animation-delay-400">
+                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
+                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <div>
+                    <p class="text-xs text-white/50 uppercase tracking-wider">Styles</p>
+                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Curated</p>
+                  </div>
+                </div>
+                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
+                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <div>
+                    <p class="text-xs text-white/50 uppercase tracking-wider">Inventory</p>
+                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Planned</p>
+                  </div>
+                </div>
+                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
+                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <div>
+                    <p class="text-xs text-white/50 uppercase tracking-wider">Branding</p>
+                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Optional</p>
+                  </div>
+                </div>
+                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
+                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <div>
+                    <p class="text-xs text-white/50 uppercase tracking-wider">Staffing</p>
+                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Included</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 15 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen bg-gradient-to-br from-[#F8F7F4] via-[#F8F7F4] to-[#E5E3DE] flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 py-20">
+          <div class="text-center mb-16">
+            <div class="inline-flex items-center gap-4 mb-8 animate-slide-up">
+              <span class="text-7xl font-bold bg-gradient-to-b from-[#5B8DB8]/30 to-transparent bg-clip-text text-transparent">13</span>
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-[#1A1A1A] mb-4 animate-slide-up animation-delay-200">Custom Jibbitz &amp; <span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Crocs</span></h2>
+            <p class="text-lg text-[#666666] max-w-2xl mx-auto animate-slide-up animation-delay-300">Personalize items with curated Jibbitz charms, patches, and branded embellishments for a fun, interactive keepsake.</p>
+          </div>
+          <div class="grid md:grid-cols-3 gap-6 mb-12 animate-slide-up animation-delay-400">
+            <div class="group text-center p-8 bg-white shadow-lg rounded-2xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-default">
+              <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                <span class="text-2xl font-bold text-white">1</span>
+              </div>
+              <h3 class="text-lg font-bold text-[#1A1A1A] mb-2 group-hover:text-[#5B8DB8] transition-colors">Choose Base</h3>
+              <p class="text-[#666666]">Select your preferred Crocs or tote</p>
+            </div>
+            <div class="group text-center p-8 bg-white shadow-lg rounded-2xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-default">
+              <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                <span class="text-2xl font-bold text-white">2</span>
+              </div>
+              <h3 class="text-lg font-bold text-[#1A1A1A] mb-2 group-hover:text-[#5B8DB8] transition-colors">Add Charms</h3>
+              <p class="text-[#666666]">Customize with Jibbitz and patches</p>
+            </div>
+            <div class="group text-center p-8 bg-white shadow-lg rounded-2xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 cursor-default">
+              <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center group-hover:scale-110 transition-transform shadow-lg">
+                <span class="text-2xl font-bold text-white">3</span>
+              </div>
+              <h3 class="text-lg font-bold text-[#1A1A1A] mb-2 group-hover:text-[#5B8DB8] transition-colors">Take Home</h3>
+              <p class="text-[#666666]">Leave with your personalized item</p>
+            </div>
+          </div>
+          <div class="bg-gradient-to-r from-[#1A1A1A] to-[#2A2A2A] p-8 rounded-2xl animate-slide-up animation-delay-500">
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+              <div class="group cursor-default">
+                <p class="text-3xl font-bold mb-1 group-hover:scale-110 transition-transform text-white">500</p>
+                <p class="text-sm text-white/60">Min. custom charms</p>
+              </div>
+              <div class="group cursor-default">
+                <p class="text-3xl font-bold mb-1 group-hover:scale-110 transition-transform text-white">18-25</p>
+                <p class="text-sm text-white/60">Days lead time</p>
+              </div>
+              <div class="group cursor-default">
+                <p class="text-3xl font-bold mb-1 group-hover:scale-110 transition-transform text-white">250+</p>
+                <p class="text-sm text-white/60">Min. participants</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 16 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen relative overflow-hidden">
+        <div class="absolute inset-0">
+          <img src="https://images.unsplash.com/photo-1608256246200-53e635b5b65f?w=1920&q=100" alt="Tecovas boots" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-l from-[#5B8DB8]/95 via-[#5B8DB8]/70 to-transparent"></div>
+        </div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-white/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-white/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full min-h-screen grid lg:grid-cols-2">
+          <div class="hidden lg:block"></div>
+          <div class="flex items-center px-8 lg:px-16 py-16 lg:py-20">
+            <div class="max-w-lg">
+              <p class="text-sm font-medium tracking-[0.3em] text-white/80 uppercase mb-6 animate-slide-left">Experience 14</p>
+              <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight animate-slide-left animation-delay-200">Tecovas<br>Fitting</h2>
+              <p class="text-white/90 text-lg leading-relaxed mb-10 animate-slide-left animation-delay-300">Explore and select premium western footwear in an elevated, retail-inspired setting. Craftsmanship, style, and luxury.</p>
+              <div class="space-y-4 animate-slide-left animation-delay-400">
+                <div class="group flex items-start gap-4 cursor-default">
+                  <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
+                    <div class="w-2 h-2 rounded-full bg-[#5B8DB8]"></div>
+                  </div>
+                  <p class="text-white/90 group-hover:text-white transition-colors">A minimum order is required. Final minimums and event costs will depend on your specific program.</p>
+                </div>
+                <div class="group flex items-start gap-4 cursor-default">
+                  <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
+                    <div class="w-2 h-2 rounded-full bg-[#5B8DB8]"></div>
+                  </div>
+                  <p class="text-white/90 group-hover:text-white transition-colors">Staffing, labor, and transportation outlined ahead with no surprises.</p>
+                </div>
+                <div class="group flex items-start gap-4 cursor-default">
+                  <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
+                    <div class="w-2 h-2 rounded-full bg-[#5B8DB8]"></div>
+                  </div>
+                  <p class="text-white/90 group-hover:text-white transition-colors">Every program is customized based on your goals, audience, and event needs.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 17 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen bg-[#F8F7F4] relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="w-full min-h-screen grid lg:grid-cols-2">
+          <div class="relative min-h-[50vh] lg:min-h-screen group overflow-hidden">
+            <img src="https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=1920&q=100" alt="Luxury perfume" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent to-[#F8F7F4]/30"></div>
+          </div>
+          <div class="flex items-center justify-center px-8 lg:px-16 py-16 lg:py-20 bg-gradient-to-br from-[#F8F7F4] to-[#EBE9E4]">
+            <div class="max-w-lg w-full">
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6 animate-slide-left">Experience 15</p>
+              <h2 class="text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-6 leading-tight animate-slide-left animation-delay-200">Luxury<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Perfume</span></h2>
+              <p class="text-[#666666] text-lg leading-relaxed mb-10 animate-slide-left animation-delay-300">Explore and select from a curated collection of premium perfumes, creating a sophisticated and personalized gifting moment.</p>
+              <div class="space-y-4 animate-slide-left animation-delay-400">
+                <div class="group p-6 bg-white border-l-4 border-[#5B8DB8] rounded-r-xl shadow-md hover:shadow-xl hover:border-l-8 transition-all duration-300 cursor-default">
+                  <p class="text-2xl font-bold text-[#1A1A1A] mb-1 group-hover:text-[#5B8DB8] transition-colors">5-8 Options</p>
+                  <p class="text-[#666666]">Curated fragrances for men and women</p>
+                </div>
+                <div class="group p-6 bg-white border-l-4 border-[#5B8DB8] rounded-r-xl shadow-md hover:shadow-xl hover:border-l-8 transition-all duration-300 cursor-default">
+                  <p class="text-2xl font-bold text-[#1A1A1A] mb-1 group-hover:text-[#5B8DB8] transition-colors">250+ Guests</p>
+                  <p class="text-[#666666]">Typical program starting point</p>
+                </div>
+                <div class="group p-6 bg-white border-l-4 border-[#5B8DB8] rounded-r-xl shadow-md hover:shadow-xl hover:border-l-8 transition-all duration-300 cursor-default">
+                  <p class="text-2xl font-bold text-[#1A1A1A] mb-1 group-hover:text-[#5B8DB8] transition-colors">Premium Display</p>
+                  <p class="text-[#666666]">Elegant retail setup</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 18 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen relative overflow-hidden">
+        <div class="absolute inset-0">
+          <img src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=1920&q=100" alt="Golf events" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/95 via-[#1A1A1A]/70 to-[#1A1A1A]/40"></div>
+        </div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-white/10 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-white/10 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full min-h-screen flex items-center">
+          <div class="w-full max-w-6xl mx-auto px-8 md:px-16 py-20">
+            <div class="grid lg:grid-cols-2 gap-16 items-center">
+              <div class="animate-slide-right">
+                <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 16</p>
+                <h2 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">Onsite<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Golf Events</span></h2>
+                <p class="text-white/80 text-lg leading-relaxed mb-10">An elevated retail-inspired experience featuring premium golf essentials: custom belt fittings, golf shoes, apparel, and more.</p>
+                <div class="grid grid-cols-2 gap-3">
+                  <div class="group flex items-center gap-3 cursor-default">
+                    <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                    <span class="text-white/70 group-hover:text-white transition-colors">Built per event</span>
+                  </div>
+                  <div class="group flex items-center gap-3 cursor-default">
+                    <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                    <span class="text-white/70 group-hover:text-white transition-colors">Scalable</span>
+                  </div>
+                  <div class="group flex items-center gap-3 cursor-default">
+                    <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                    <span class="text-white/70 group-hover:text-white transition-colors">Creative direction</span>
+                  </div>
+                  <div class="group flex items-center gap-3 cursor-default">
+                    <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                    <span class="text-white/70 group-hover:text-white transition-colors">Fully customizable</span>
+                  </div>
+                </div>
+              </div>
+              <div class="grid grid-cols-2 gap-4 animate-slide-left animation-delay-300">
+                <div class="group aspect-square flex items-center justify-center p-6 rounded-2xl transition-all duration-300 cursor-default hover:scale-105 bg-white/5 border border-white/10 hover:bg-white/10">
+                  <div class="text-center">
+                    <p class="text-sm uppercase tracking-wider mb-2 text-[#5B8DB8]">Live</p>
+                    <p class="text-white font-semibold text-lg">Embroidery</p>
+                  </div>
+                </div>
+                <div class="group aspect-square flex items-center justify-center p-6 rounded-2xl transition-all duration-300 cursor-default hover:scale-105 bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6]">
+                  <div class="text-center">
+                    <p class="text-sm uppercase tracking-wider mb-2 text-white/80">Personal</p>
+                    <p class="text-white font-semibold text-lg">Touch</p>
+                  </div>
+                </div>
+                <div class="group aspect-square flex items-center justify-center p-6 rounded-2xl transition-all duration-300 cursor-default hover:scale-105 bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6]">
+                  <div class="text-center">
+                    <p class="text-sm uppercase tracking-wider mb-2 text-white/80">Stand</p>
+                    <p class="text-white font-semibold text-lg">Out</p>
+                  </div>
+                </div>
+                <div class="group aspect-square flex items-center justify-center p-6 rounded-2xl transition-all duration-300 cursor-default hover:scale-105 bg-white/5 border border-white/10 hover:bg-white/10">
+                  <div class="text-center">
+                    <p class="text-sm uppercase tracking-wider mb-2 text-[#5B8DB8]">Lasting</p>
+                    <p class="text-white font-semibold text-lg">Impression</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 19 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen bg-gradient-to-br from-[#F8F7F4] via-[#F8F7F4] to-[#E5E3DE] flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 py-20">
+          <div class="grid lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-white p-8 lg:p-12 shadow-2xl rounded-2xl animate-slide-right hover:shadow-3xl transition-shadow duration-500">
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 17</p>
+              <h2 class="text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-6 leading-tight">Engraving<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Experience</span></h2>
+              <p class="text-[#666666] text-lg leading-relaxed mb-10">Live shoe customization gives guests the opportunity to personalize their footwear with curated design elements and branded details.</p>
+              <div class="grid sm:grid-cols-2 gap-5">
+                <div class="group flex items-start gap-4 cursor-default">
+                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+                    <span class="text-sm font-bold text-white">1</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-[#1A1A1A] group-hover:text-[#5B8DB8] transition-colors">Live Artists</p>
+                    <p class="text-sm text-[#666666]">Expert engravers onsite</p>
+                  </div>
+                </div>
+                <div class="group flex items-start gap-4 cursor-default">
+                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+                    <span class="text-sm font-bold text-white">2</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-[#1A1A1A] group-hover:text-[#5B8DB8] transition-colors">No Minimum</p>
+                    <p class="text-sm text-[#666666]">Order quantity flexibility</p>
+                  </div>
+                </div>
+                <div class="group flex items-start gap-4 cursor-default">
+                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+                    <span class="text-sm font-bold text-white">3</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-[#1A1A1A] group-hover:text-[#5B8DB8] transition-colors">Custom Branding</p>
+                    <p class="text-sm text-[#666666]">Logo debossed option</p>
+                  </div>
+                </div>
+                <div class="group flex items-start gap-4 cursor-default">
+                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+                    <span class="text-sm font-bold text-white">4</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-[#1A1A1A] group-hover:text-[#5B8DB8] transition-colors">Seamless Setup</p>
+                    <p class="text-sm text-[#666666]">Table, chair, signage, power</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="relative rounded-2xl overflow-hidden animate-slide-left animation-delay-300 group shadow-2xl">
+              <!-- New Sports Shoe Image inserted here -->
+              <img src="https://cdn.pixabay.com/photo/2016/06/20/21/46/sport-shoes-1470061_1280.jpg" alt="Event experience" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+              <div class="absolute inset-0 bg-gradient-to-t from-[#5B8DB8]/80 to-transparent"></div>
+              <div class="absolute bottom-6 left-6 right-6">
+                <p class="text-sm tracking-widest text-white uppercase">Live Experience</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 20 -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full h-screen relative overflow-hidden">
+        <div class="absolute inset-0">
+          <img src="https://images.unsplash.com/photo-1528605248644-14dd04022da1?w=1920&q=100" alt="Team collaboration" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-br from-[#1A1A1A]/95 via-[#1A1A1A]/80 to-[#5B8DB8]/30"></div>
+        </div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-white/10 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-white/10 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="absolute bottom-0 right-0 w-[800px] h-[800px] rounded-full bg-gradient-to-tl from-[#5B8DB8]/30 to-transparent blur-3xl animate-pulse-slow"></div>
+        <div class="relative z-10 w-full h-full flex items-center justify-center">
+          <div class="text-center px-8 md:px-16">
+            <div class="mb-10 animate-slide-up">
+              <img src="https://www.jmalogos.com/assets/jma_logo-Jw-0tIpM.png" alt="JMA" class="h-16 w-auto mx-auto mb-4">
+              <span class="text-lg font-medium text-white/80 tracking-wide">Onsite Events</span>
+            </div>
+            <h2 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight animate-slide-up animation-delay-200">Let's Create<br><span class="bg-gradient-to-r from-[#5B8DB8] via-[#7BA3C9] to-[#5B8DB8] bg-clip-text text-transparent animate-gradient">Something Special</span></h2>
+            <p class="text-lg text-white/70 max-w-2xl mx-auto mb-10 animate-slide-up animation-delay-400">Ready to elevate your next event? We'd love to partner with you.</p>
+            <div class="flex flex-wrap justify-center gap-6 animate-slide-up animation-delay-600">
+              <button class="group px-8 py-4 bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] rounded-full hover:shadow-lg hover:shadow-[#5B8DB8]/30 hover:scale-105 transition-all duration-300">
+                <span class="text-white font-semibold tracking-wide">Get in Touch</span>
+              </button>
+              <button class="group px-8 py-4 bg-white/10 backdrop-blur-sm rounded-full border border-white/20 hover:bg-white/20 hover:scale-105 transition-all duration-300">
+                <span class="text-white font-medium tracking-wide">View Portfolio</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const slides = document.querySelectorAll('.slide-item');
+      const totalSlides = slides.length;
+      let currentSlide = 0;
+      let isAnimating = false;
+
+      // Map out whether a slide has a light background (requires dark dots) or dark background
+      const isLightSlide = [false, false, true, false, true, false, true, false, false, false, true, false, true, false, true, false, true, false, true, false];
+
+      // UI Elements
+      const btnPrev = document.getElementById('btn-prev');
+      const btnNext = document.getElementById('btn-next');
+      const slideCounter = document.getElementById('slide-counter');
+      const dotsContainer = document.getElementById('progress-dots');
+      const downloadMenu = document.getElementById('download-menu');
+      const downloadBtn = document.getElementById('download-btn');
+
+      // Dropdown interaction
+      downloadBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        downloadMenu.classList.toggle('opacity-0');
+        downloadMenu.classList.toggle('pointer-events-none');
+        downloadMenu.classList.toggle('translate-y-[-10px]');
+      });
+      document.addEventListener('click', () => {
+        downloadMenu.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
+      });
+      downloadMenu.addEventListener('click', (e) => e.stopPropagation());
+
+      // Initialize Progress Dots
+      for(let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('button');
+        dot.className = 'w-[6px] h-[6px] rounded-full transition-all duration-300 ease-in-out ' + (i === 0 ? 'bg-[#5B8DB8] w-4' : 'bg-white/30 hover:bg-white/50');
+        dot.onclick = () => window.goToSlide(i);
+        dotsContainer.appendChild(dot);
+      }
+      const dots = dotsContainer.querySelectorAll('button');
+
+      function updateUI(index) {
+        slideCounter.textContent = `${String(index + 1).padStart(2, '0')} / ${String(totalSlides).padStart(2, '0')}`;
+        const light = isLightSlide[index];
+        dots.forEach((dot, i) => {
+          if (i === index) {
+            dot.className = 'w-[18px] h-[6px] rounded-full transition-all duration-300 ease-in-out bg-[#5B8DB8]';
+          } else {
+            dot.className = `w-[6px] h-[6px] rounded-full transition-all duration-300 ease-in-out hover:scale-150 ${light ? 'bg-[#1A1A1A]/30 hover:bg-[#1A1A1A]/50' : 'bg-white/30 hover:bg-white/50'}`;
+          }
+        });
+      }
+
+      window.goToSlide = function(index, instant = false) {
+        if (!instant && (isAnimating || index === currentSlide || index < 0 || index >= totalSlides)) return;
+        if (!instant) isAnimating = true;
+
+        const dir = index > currentSlide ? 1 : -1;
+
+        slides[currentSlide].classList.remove('is-active', 'opacity-100', 'translate-y-0', 'scale-100', 'z-20', 'pointer-events-auto');
+        
+        if (instant) {
+            slides[currentSlide].classList.add('opacity-0', 'z-0', 'pointer-events-none');
+        } else {
+            slides[currentSlide].classList.add('opacity-0', dir === 1 ? '-translate-y-12' : 'translate-y-12', 'scale-95', 'z-0', 'pointer-events-none');
+        }
+        
+        slides[index].classList.remove('translate-y-12', '-translate-y-12', 'opacity-0', 'scale-95', 'z-0', 'pointer-events-none');
+        slides[index].classList.add('is-active', 'opacity-100', 'translate-y-0', 'scale-100', 'z-20', 'pointer-events-auto');
+
+        currentSlide = index;
+        updateUI(currentSlide);
+
+        if (!instant) {
+            setTimeout(() => { isAnimating = false; }, 700);
+        }
+      }
+
+      // Action Handlers
+      btnPrev.addEventListener('click', () => window.goToSlide(currentSlide - 1));
+      btnNext.addEventListener('click', () => window.goToSlide(currentSlide + 1));
+
+      // Key + Wheel Events
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+          e.preventDefault(); window.goToSlide(currentSlide + 1);
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+          e.preventDefault(); window.goToSlide(currentSlide - 1);
+        }
+      });
+
+      let wheelTimeout;
+      window.addEventListener('wheel', (e) => {
+        if (isAnimating) return;
+        clearTimeout(wheelTimeout);
+        wheelTimeout = setTimeout(() => {
+          if (e.deltaY > 20) window.goToSlide(currentSlide + 1);
+          else if (e.deltaY < -20) window.goToSlide(currentSlide - 1);
+        }, 50); 
+      });
+
+      // Swipe
+      let touchStartY = 0, touchStartX = 0;
+      window.addEventListener('touchstart', e => { touchStartY = e.changedTouches[0].screenY; touchStartX = e.changedTouches[0].screenX; });
+      window.addEventListener('touchend', e => {
+        const diffY = touchStartY - e.changedTouches[0].screenY;
+        const diffX = touchStartX - e.changedTouches[0].screenX;
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+          if (diffX > 50) window.goToSlide(currentSlide + 1);
+          else if (diffX < -50) window.goToSlide(currentSlide - 1);
+        } else {
+          if (diffY > 50) window.goToSlide(currentSlide + 1);
+          else if (diffY < -50) window.goToSlide(currentSlide - 1);
+        }
+      });
+
+      // Export Script
+      window.exportDeck = async function(format) {
+        // Close menu
+        downloadMenu.classList.add('opacity-0', 'pointer-events-none', 'translate-y-[-10px]');
+
+        // Display Loading
+        const originalHtml = downloadBtn.innerHTML;
+        downloadBtn.innerHTML = `<svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>`;
+        downloadBtn.disabled = true;
+
+        // Force freeze animations instantly to prevent ghosting during export
+        const freezeStyle = document.createElement('style');
+        freezeStyle.innerHTML = `* { transition: none !important; animation: none !important; } .animate-slide-up, .animate-slide-left, .animate-slide-right { opacity: 1 !important; transform: none !important; }`;
+        document.head.appendChild(freezeStyle);
+
+        const currentActive = currentSlide;
+        
+        // Export variables
+        const { jsPDF } = window.jspdf;
+        let pdf = format === 'pdf' ? new jsPDF('landscape', 'mm', 'a4') : null;
+        let pptx = format === 'pptx' ? new PptxGenJS() : null;
+        if (pptx) pptx.layout = 'LAYOUT_16x9';
+
+        try {
+            for (let i = 0; i < slides.length; i++) {
+                // Instantly swap view to the target slide natively to force full render
+                slides.forEach(s => {
+                    s.classList.remove('opacity-100', 'z-20');
+                    s.classList.add('opacity-0', 'z-0');
+                });
+                slides[i].classList.remove('opacity-0', 'z-0');
+                slides[i].classList.add('opacity-100', 'z-20');
+                
+                // Slight pause to ensure DOM update is registered and fonts/images paint
+                await new Promise(r => setTimeout(r, 150)); 
+                
+                // Paint perfect canvas using rendered elements
+                const canvas = await html2canvas(slides[i], {
+                    scale: 2,
+                    useCORS: true, 
+                    logging: false,
+                    allowTaint: true
+                });
+                
+                const imgData = canvas.toDataURL('image/jpeg', 0.98);
+
+                if (format === 'pdf') {
+                    if (i > 0) pdf.addPage();
+                    const pdfWidth = 297; // exact A4 width
+                    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+                    const yOffset = (210 - pdfHeight) / 2; // Center Y axis perfectly
+                    pdf.addImage(imgData, 'JPEG', 0, yOffset, pdfWidth, pdfHeight);
+                } else {
+                    let slidePptx = pptx.addSlide();
+                    slidePptx.addImage({ data: imgData, x: 0, y: 0, w: '100%', h: '100%' });
+                }
+            }
+
+            // Fire download
+            if (format === 'pdf') {
+                pdf.save('JMA_Onsite_Events_Pitch_Deck.pdf');
+            } else {
+                await pptx.writeFile({ fileName: 'JMA_Onsite_Events_Pitch_Deck.pptx' });
+            }
+
+        } catch(e) {
+            console.error('Export Error:', e);
+            alert('Something went wrong. Please check console.');
+        }
+
+        // Restore initial state completely
+        document.head.removeChild(freezeStyle);
+        window.goToSlide(currentActive, true); 
+        downloadBtn.innerHTML = originalHtml;
+        downloadBtn.disabled = false;
+      }
+
+      // First Paint
+      updateUI(currentSlide);
+    });
+  </script>
+</body>
+</html>
