@@ -234,38 +234,177 @@
           <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
         </div>
         <div class="w-full h-full grid lg:grid-cols-2">
-          <div class="relative h-full group overflow-hidden">
-            <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=1920&q=100" alt="Leather craftsmanship" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-            <div class="absolute inset-0" style="background:linear-gradient(to right, rgba(91, 141, 184, 0.4), transparent)"></div>
-            <div class="absolute bottom-8 left-8 bg-white/95 backdrop-blur-sm px-6 py-4 shadow-2xl animate-slide-up animation-delay-400 transition-transform">
-              <p class="text-xs tracking-[0.2em] text-[#5B8DB8] uppercase mb-1">Experience 01</p>
-              <p class="text-xl font-semibold text-[#1A1A1A]">Leather Patch</p>
-            </div>
-          </div>
-          <div class="flex items-center justify-center px-8 lg:px-12 py-12 bg-gradient-to-br from-[#F8F7F4] to-[#EBE9E4]">
-            <div class="max-w-md w-full">
-              <h2 class="text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-4 leading-tight animate-slide-left">Leather Patch<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Customization</span></h2>
-              <p class="text-[#666666] leading-relaxed mb-6 text-base animate-slide-left animation-delay-200">Guests choose from custom shaped leather patches and personalize them with their name or initials, creating a unique branded keepsake on site.</p>
-              <div class="grid grid-cols-2 gap-2 animate-slide-left animation-delay-300">
-                <div class="group p-3 bg-white border-l-2 border-[#5B8DB8] hover:shadow-md transition-all duration-300">
-                  <p class="text-xs tracking-widest text-[#999999] uppercase mb-1">Styles</p>
-                  <p class="font-semibold text-[#1A1A1A] text-sm">Curated Options</p>
-                </div>
-                <div class="group p-3 bg-white border-l-2 border-[#5B8DB8] hover:shadow-md transition-all duration-300">
-                  <p class="text-xs tracking-widest text-[#999999] uppercase mb-1">Inventory</p>
-                  <p class="font-semibold text-[#1A1A1A] text-sm">Fully Managed</p>
-                </div>
-                <div class="group p-3 bg-white border-l-2 border-[#5B8DB8] hover:shadow-md transition-all duration-300">
-                  <p class="text-xs tracking-widest text-[#999999] uppercase mb-1">Branding</p>
-                  <p class="font-semibold text-[#1A1A1A] text-sm">Debossed Logo</p>
-                </div>
-                <div class="group p-3 bg-white border-l-2 border-[#5B8DB8] hover:shadow-md transition-all duration-300">
-                  <p class="text-xs tracking-widest text-[#999999] uppercase mb-1">Staffing</p>
-                  <p class="font-semibold text-[#1A1A1A] text-sm">Experts Included</p>
-                </div>
-              </div>
-            </div>
-          </div>
+<!-- Centering Wrapper -->
+<div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 12px; box-sizing: border-box;">
+  
+  <!-- Scoped Entrance & Interactive Style Blocks -->
+  <style>
+    /* 1. Base Inactive States (Pre-entrance) */
+    .collage-card-container {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .collage-main-img {
+      opacity: 0;
+      transform: scale(0.92) translateY(30px);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+    }
+    .collage-left-img {
+      opacity: 0;
+      transform: scale(0.92) translateY(35px);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+    }
+    .collage-right-img {
+      opacity: 0;
+      transform: scale(0.92) translateY(35px);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+    }
+    .collage-badge {
+      opacity: 0;
+      transform: scale(0.8) translateY(20px);
+      transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.8s ease-out;
+    }
+
+    /* 2. Active Entrance Trigger (Staggered build-up) */
+    .slide-item.is-active .collage-card-container {
+      opacity: 1;
+      transform: translateY(0);
+      /* Idle floating starts automatically once the entrance sequences complete */
+      animation: idleFloat 6s ease-in-out infinite;
+      animation-delay: 1.4s;
+    }
+    .slide-item.is-active .collage-main-img {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition-delay: 150ms;
+    }
+    .slide-item.is-active .collage-left-img {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition-delay: 300ms;
+    }
+    .slide-item.is-active .collage-right-img {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition-delay: 450ms;
+    }
+    .slide-item.is-active .collage-badge {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition-delay: 600ms;
+    }
+
+    /* 3. Smooth Interactive Hovers (Inside Image elements) */
+    .collage-img-wrapper img {
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .collage-img-wrapper:hover img {
+      transform: scale(1.06);
+    }
+    .collage-overlay-layer {
+      position: absolute;
+      inset: 0;
+      transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .collage-img-wrapper:hover .collage-overlay-layer {
+      background-color: transparent !important;
+    }
+
+    /* 4. Idle Floating Loop */
+    @keyframes idleFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+  </style>
+
+  <!-- Larger Collage Card -->
+  <div class="collage-card-container" 
+       style="position: relative; width: 100%; max-width: 580px; display: flex; flex-direction: column; gap: 12px; padding: 12px; background-color: #EBE9E4; box-sizing: border-box; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.04);">
+    
+    <!-- Hero Image (Perfect Square, Dominant) -->
+    <div class="collage-main-img collage-img-wrapper" style="width: 100%; aspect-ratio: 1 / 1; border-radius: 14px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);">
+      <img src="https://coriumusa.com/cdn/shop/files/WhatsApp_Image_2026-03-13_at_1.13.48_AM.jpg?v=1773346658&width=1920?w=1920&q=100" 
+           alt="Leather craftsmanship" 
+           style="width: 100%; height: 100%; object-fit: cover;">
+      <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.4), transparent); pointer-events: none;"></div>
+    </div>
+    
+    <!-- Bottom Row (Detail wide elements) -->
+    <div style="height: 150px; width: 100%; display: flex; gap: 12px;">
+      
+      <!-- Detail Image 1 (Bottom Left) -->
+      <div class="collage-left-img collage-img-wrapper" style="width: calc(50% - 6px); height: 100%; border-radius: 14px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);">
+        <img src="https://coriumusa.com/cdn/shop/files/z5.webp?v=1764661078&width=2000?w=800&q=80" 
+             alt="Leather texture" 
+             style="width: 100%; height: 100%; object-fit: cover;">
+        <div class="collage-overlay-layer" style="background-color: rgba(91, 141, 184, 0.15);"></div>
+      </div>
+      
+      <!-- Detail Image 2 (Bottom Right) -->
+      <div class="collage-right-img collage-img-wrapper" style="width: calc(50% - 6px); height: 100%; border-radius: 14px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.08);">
+        <img src="https://coriumusa.com/cdn/shop/files/z1.webp?v=1764661059&width=2000?w=800&q=80" 
+             alt="Leather workspace and details" 
+             style="width: 100%; height: 100%; object-fit: cover;">
+        <div class="collage-overlay-layer" style="background-color: rgba(91, 141, 184, 0.15);"></div>
+      </div>
+      
+    </div>
+
+    <!-- Floating Experience Badge (Delays slightly for final bouncy settle) -->
+    <div class="collage-badge" 
+         style="position: absolute; bottom: 186px; left: 24px; z-index: 10; background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 14px 20px; border-radius: 12px; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15); cursor: default;">
+      <p style="font-size: 10px; font-weight: 500; letter-spacing: 0.25em; color: #5B8DB8; text-transform: uppercase; margin: 0 0 2px 0; font-family: 'Inter', sans-serif;">Experience 01</p>
+      <p style="font-size: 18px; font-weight: 600; color: #1A1A1A; margin: 0; font-family: 'Inter', sans-serif;">Leather Patch</p>
+    </div>
+    
+  </div>
+</div>
+<div class="flex items-center justify-center px-8 lg:px-16 py-12 bg-gradient-to-br from-[#F8F7F4] to-[#EBE9E4]">
+  <!-- Expanded container max-width to max-w-xl -->
+  <div class="max-w-xl w-full">
+    <!-- Enlarged title text (lg:text-5xl) and spacing -->
+    <h2 class="text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-6 leading-tight animate-slide-left">
+      Leather Patch<br>
+      <span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Customization</span>
+    </h2>
+    
+    <!-- Enlarged paragraph text (text-lg) and margins -->
+    <p class="text-[#666666] leading-relaxed mb-8 text-lg animate-slide-left animation-delay-200">
+      Guests choose from custom shaped leather patches and personalize them with their name or initials, creating a unique branded keepsake on site.
+    </p>
+    
+    <!-- Expanded grid gap (gap-4) -->
+    <div class="grid grid-cols-2 gap-4 animate-slide-left animation-delay-300">
+      
+      <!-- Styles Card (Thicker borders, larger text, padding) -->
+      <div class="group p-5 bg-white border-l-4 border-[#5B8DB8] rounded-r-xl hover:shadow-lg transition-all duration-300">
+        <p class="text-xs tracking-widest text-[#999999] uppercase mb-1.5 font-semibold">Styles</p>
+        <p class="font-bold text-[#1A1A1A] text-base lg:text-lg">Curated Options</p>
+      </div>
+      
+      <!-- Inventory Card -->
+      <div class="group p-5 bg-white border-l-4 border-[#5B8DB8] rounded-r-xl hover:shadow-lg transition-all duration-300">
+        <p class="text-xs tracking-widest text-[#999999] uppercase mb-1.5 font-semibold">Inventory</p>
+        <p class="font-bold text-[#1A1A1A] text-base lg:text-lg">Fully Managed</p>
+      </div>
+      
+      <!-- Branding Card -->
+      <div class="group p-5 bg-white border-l-4 border-[#5B8DB8] rounded-r-xl hover:shadow-lg transition-all duration-300">
+        <p class="text-xs tracking-widest text-[#999999] uppercase mb-1.5 font-semibold">Branding</p>
+        <p class="font-bold text-[#1A1A1A] text-base lg:text-lg">Debossed Logo</p>
+      </div>
+      
+      <!-- Staffing Card -->
+      <div class="group p-5 bg-white border-l-4 border-[#5B8DB8] rounded-r-xl hover:shadow-lg transition-all duration-300">
+        <p class="text-xs tracking-widest text-[#999999] uppercase mb-1.5 font-semibold">Staffing</p>
+        <p class="font-bold text-[#1A1A1A] text-base lg:text-lg">Experts Included</p>
+      </div>
+      
+    </div>
+  </div>
+</div>
         </div>
       </div>
     </div>
@@ -292,47 +431,78 @@
             <div class="bg-black/40 backdrop-blur-md border border-white/10 p-8 lg:p-10 shadow-2xl rounded-2xl animate-slide-right">
               <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-3">Experience 02</p>
               <h2 class="text-3xl lg:text-5xl font-bold text-white mb-4 leading-tight">Character<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Creations</span></h2>
-              <p class="text-white/70 text-base leading-relaxed mb-8">AI-assisted caricature gifting experience where guests receive personalized branded keepsakes created onsite.</p>
-              <div class="space-y-4">
-                <div class="group flex items-center gap-4 cursor-default">
-                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
-                    <span class="text-sm font-bold text-white">1</span>
-                  </div>
-                  <div>
-                    <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Live Creation</p>
-                    <p class="text-sm text-white/50">Artists draw guests in real time</p>
-                  </div>
-                </div>
-                <div class="group flex items-center gap-4 cursor-default">
-                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
-                    <span class="text-sm font-bold text-white">2</span>
-                  </div>
-                  <div>
-                    <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">AI-Assisted</p>
-                    <p class="text-sm text-white/50">Enhanced with creative styles</p>
-                  </div>
-                </div>
-                <div class="group flex items-center gap-4 cursor-default">
-                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
-                    <span class="text-sm font-bold text-white">3</span>
-                  </div>
-                  <div>
-                    <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Take Home Gift</p>
-                    <p class="text-sm text-white/50">Personalized keepsake</p>
-                  </div>
-                </div>
-              </div>
+<!-- Core Explanation Paragraph -->
+<div class="mb-8">
+  <p class="text-white/80 text-sm md:text-base leading-relaxed">
+    Our events team travels across the U.S. creating heart-warming, insta-worthy gifts for attendees. We pre-brand your items ahead of time and use proprietary A.I. tools on-site to create a custom caricature gift for each guest.
+  </p>
+</div>
+
+<!-- Summarized 4-Step Sequence -->
+<div class="space-y-4">
+  <!-- Step 1 -->
+  <div class="group flex items-start gap-4 cursor-default">
+    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+      <span class="text-sm font-bold text-white">1</span>
+    </div>
+    <div>
+      <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Choose Character Style</p>
+      <p class="text-xs md:text-sm text-white/60 leading-relaxed">
+        Select from our popular styles or suggest a custom look that fits your event's vibe.
+      </p>
+    </div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="group flex items-start gap-4 cursor-default">
+    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+      <span class="text-sm font-bold text-white">2</span>
+    </div>
+    <div>
+      <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Choose Event Theme</p>
+      <p class="text-xs md:text-sm text-white/60 leading-relaxed">
+        Incorporate custom themes or backgrounds into the artwork to match your exact branding.
+      </p>
+    </div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="group flex items-start gap-4 cursor-default">
+    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+      <span class="text-sm font-bold text-white">3</span>
+    </div>
+    <div>
+      <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Choose The Perfect Gift</p>
+      <p class="text-xs md:text-sm text-white/60 leading-relaxed">
+        Pick from over 20+ high-quality, practical items that guests will be excited to take home.
+      </p>
+    </div>
+  </div>
+
+  <!-- Step 4 -->
+  <div class="group flex items-start gap-4 cursor-default">
+    <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+      <span class="text-sm font-bold text-white">4</span>
+    </div>
+    <div>
+      <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Watch Your Guests' Reactions</p>
+      <p class="text-xs md:text-sm text-white/60 leading-relaxed">
+        Enjoy the fun as your guests share laughs, compare caricatures, and snap photos of their custom creations.
+      </p>
+    </div>
+  </div>
+</div>
             </div>
             <!-- Foreground Collage -->
             <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-left animation-delay-300">
               <div class="col-span-2 overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1560421683-6856ea585c78?w=800&q=80" alt="Art" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                <img src="https://swankypromo.com/cdn/shop/files/Screenshot_2025-08-18_at_8.08.07_PM.png?v=1756181251&width=2000?w=800&q=80" alt="Art" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
               </div>
               <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=800&q=80" alt="Digital Art" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                <img src="https://swankypromo.com/cdn/shop/files/Screen_Shot_2025-08-18_at_11.33.55_AM.png?v=1756181706&width=750?w=800&q=80" alt="Digital Art" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
               </div>
               <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1543857778-c4a1a3e0b2eb?w=800&q=80" alt="Drawing" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                <img src="https://swankypromo.com/cdn/shop/files/Screenshot_2025-08-18_at_8.09.30_PM.png?v=1755725168&width=750?w=800&q=80" alt="Drawing" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
               </div>
             </div>
           </div>
@@ -341,21 +511,31 @@
     </div>
 
     <!-- SLIDE 05: Character Creations Video (Image-focused slide – no visible title) -->
+<!-- SLIDE 05: Character Creations Video Slide -->
     <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
-      <div class="w-full h-screen relative overflow-hidden">
-        <div class="absolute inset-0">
-          <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=1920&q=100" alt="Character Creations Video" class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-black/40"></div>
+      <div class="w-full h-screen relative overflow-hidden bg-black flex items-center justify-center">
+        
+        <!-- Full Screen Responsive Embedded Video -->
+        <div class="absolute inset-0 z-0">
+          <iframe 
+            src="https://jmalogos.sharepoint.com/sites/BusinessDevelopment/_layouts/15/embed.aspx?UniqueId=98302aee-fd83-4d8c-bd55-07db87b41dac&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" 
+            style="border: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
+            scrolling="no" 
+            allowfullscreen 
+            title="Swanky On-Site Caricature Creations">
+          </iframe>
+          
+          <!-- Subtle top & bottom shadow overlays that do not block interactions with the video player controls -->
+          <div class="absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-black/60 to-transparent pointer-events-none"></div>
+          <div class="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"></div>
         </div>
-        <div class="relative z-10 w-full h-full flex items-center justify-center">
-          <div class="w-24 h-24 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center cursor-pointer hover:bg-white/30 hover:scale-110 transition-all duration-300 animate-pulse-slow shadow-2xl">
-            <svg class="w-10 h-10 text-white ml-2" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-          </div>
-        </div>
-        <div class="absolute bottom-12 left-12 z-10 animate-slide-up animation-delay-200">
+
+        <!-- Floating Slide Label (Overlays cleanly in the bottom-left corner) -->
+        <div class="absolute bottom-16 left-12 z-10 animate-slide-up animation-delay-200 pointer-events-none">
           <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-2">Live Action</p>
           <p class="text-white text-2xl lg:text-4xl font-bold">Character Creations Experience</p>
         </div>
+        
       </div>
     </div>
 
@@ -380,7 +560,7 @@
                 <span class="text-sm font-medium text-white tracking-wider">Experience 03</span>
               </div>
               <h2 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">Custom Shoe<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Activation</span></h2>
-              <p class="text-white/80 text-lg leading-relaxed mb-10">Live customization gives guests the opportunity to personalize their footwear with curated design elements for a one-of-a-kind experience.</p>
+              <p class="text-white/80 text-lg leading-relaxed mb-10">Make your event unforgettable with our Shoe Bar Activation, where guests customize their own shoes on-site for a one-of-a-kind experience. We handle everything from start to finish, so you can sit back while your guests walk away with a lasting memory—literally!</p>
               <div class="flex flex-wrap gap-8 mb-10">
                 <div class="text-center group cursor-default">
                   <div class="w-14 h-14 mb-3 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center group-hover:scale-110 group-hover:bg-[#5B8DB8] transition-all duration-300">
@@ -408,13 +588,13 @@
             <!-- Foreground Collage -->
             <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-left animation-delay-300">
               <div class="col-span-2 overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.pexels.com/photos/8764399/pexels-photo-8764399.jpeg?w=800&q=80" alt="Shoes" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                <img src="https://i.ibb.co/V06fkGLn/Updated-2025-Sock101-Presentation-4-3.jpg?format=750w?w=800&q=80" alt="Shoes" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
               </div>
               <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=800&q=80" alt="Sneakers" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                <img src="https://images.squarespace-cdn.com/content/v1/658cd50637ae120a2702570a/da3851be-41eb-4dbf-87d9-b7b48bb76478/4D7A9006.JPG?format=750w?w=800&q=80" alt="Sneakers" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
               </div>
               <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?w=800&q=80" alt="Design" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                <img src="https://i.ibb.co/67CbdX6R/Updated-2025-Sock101-Presentation-4-2.jpg?format=750w?w=800&q=80" alt="Design" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
               </div>
             </div>
           </div>
@@ -466,22 +646,265 @@
                 <p class="text-2xl font-bold text-white">Fully Turnkey</p>
               </div>
             </div>
-            <div class="lg:col-span-3 relative animate-slide-left animation-delay-300">
-              <div class="aspect-[4/3] rounded-2xl overflow-hidden shadow-2xl group">
-                <img src="https://images.pexels.com/photos/15195444/pexels-photo-15195444.jpeg?w=1920&q=100" alt="Sock bar" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-              </div>
-              <div class="absolute -bottom-4 -left-4 w-24 h-24 bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] rounded-xl -z-10"></div>
-            </div>
+<div class="lg:col-span-3 relative" style="width: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box;">
+  
+  <!-- Scoped Animations for the Blueprint-Style Collage -->
+  <style>
+    /* 1. Base Inactive States */
+    .sock-collage-card-container {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .sock-collage-main-img {
+      opacity: 0;
+      transform: scale(0.95) translateY(20px);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+    }
+    .sock-collage-left-img {
+      opacity: 0;
+      transform: scale(0.95) translateY(25px);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+    }
+    .sock-collage-right-img {
+      opacity: 0;
+      transform: scale(0.95) translateY(25px);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+    }
+
+    /* 2. Active Entrance Trigger (Staggered Animation build) */
+    .slide-item.is-active .sock-collage-card-container {
+      opacity: 1;
+      transform: translateY(0);
+      animation: sockIdleFloat 6s ease-in-out infinite;
+      animation-delay: 1.4s;
+    }
+    .slide-item.is-active .sock-collage-main-img {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition-delay: 150ms;
+    }
+    .slide-item.is-active .sock-collage-left-img {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition-delay: 300ms;
+    }
+    .slide-item.is-active .sock-collage-right-img {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition-delay: 450ms;
+    }
+
+    /* 3. Smooth Hover Transitions */
+    .sock-collage-img-wrapper img {
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .sock-collage-img-wrapper:hover img {
+      transform: scale(1.05);
+    }
+    .sock-collage-overlay-layer {
+      position: absolute;
+      inset: 0;
+      transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .sock-collage-img-wrapper:hover .sock-collage-overlay-layer {
+      background-color: transparent !important;
+    }
+
+    /* 4. Gentle Float Loop */
+    @keyframes sockIdleFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+  </style>
+
+  <!-- Expanded Screenshot-accurate Square Grid Container -->
+<div class="lg:col-span-3 relative" style="width: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box;">
+  
+  <!-- Scoped Animations for the Rounded Collage -->
+  <style>
+    /* 1. Base Inactive States */
+    .sock-collage-card-container {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .sock-collage-main-img {
+      opacity: 0;
+      transform: scale(0.95) translateY(20px);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+    }
+    .sock-collage-left-img {
+      opacity: 0;
+      transform: scale(0.95) translateY(25px);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+    }
+    .sock-collage-right-img {
+      opacity: 0;
+      transform: scale(0.95) translateY(25px);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+    }
+
+    /* 2. Active Entrance Trigger (Staggered Animation build) */
+    .slide-item.is-active .sock-collage-card-container {
+      opacity: 1;
+      transform: translateY(0);
+      animation: sockIdleFloat 6s ease-in-out infinite;
+      animation-delay: 1.4s;
+    }
+    .slide-item.is-active .sock-collage-main-img {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition-delay: 150ms;
+    }
+    .slide-item.is-active .sock-collage-left-img {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition-delay: 300ms;
+    }
+    .slide-item.is-active .sock-collage-right-img {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition-delay: 450ms;
+    }
+
+    /* 3. Smooth Hover Transitions */
+    .sock-collage-img-wrapper img {
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .sock-collage-img-wrapper:hover img {
+      transform: scale(1.05);
+    }
+    .sock-collage-overlay-layer {
+      position: absolute;
+      inset: 0;
+      transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .sock-collage-img-wrapper:hover .sock-collage-overlay-layer {
+      background-color: transparent !important;
+    }
+
+    /* 4. Gentle Float Loop */
+    @keyframes sockIdleFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+  </style>
+
+  <!-- Expanded Square Grid Container -->
+  <div class="sock-collage-card-container" 
+       style="position: relative; width: 100%; max-width: 590px; aspect-ratio: 1 / 1; display: flex; flex-direction: column; gap: 8px; box-sizing: border-box;">
+    
+    <!-- Hero Image (Top - Exactly 2:1 Landscape Rectangle with Rounded Corners) -->
+    <div class="sock-collage-main-img sock-collage-img-wrapper" style="width: 100%; aspect-ratio: 2 / 1; overflow: hidden; border-radius: 14px; box-shadow: 0 10px 15px -3px rgba(0,0, 0, 0.05);">
+      <img src="https://i.ibb.co/HTjFnqDQ/Updated-2025-Sock101-Presentation-4-4.jpg?w=800&q=80" 
+           alt="Sock bar display" 
+           style="width: 100%; height: 100%; object-fit: cover;">
+      <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.25), transparent); pointer-events: none;"></div>
+    </div>
+    
+    <!-- Bottom Row (Two Rounded Perfect Squares) -->
+    <div style="width: 100%; display: flex; gap: 8px;">
+      
+      <!-- Detail 1 (Bottom Left - Perfect Square) -->
+      <div class="sock-collage-left-img sock-collage-img-wrapper" style="width: calc(50% - 4px); aspect-ratio: 1 / 1; overflow: hidden; border-radius: 14px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);">
+        <img src="https://i.ibb.co/b5kn9fwv/Updated-2025-Sock101-Presentation-4-5.jpg?w=600&q=80" 
+             alt="Vibrant sock options" 
+             style="width: 100%; height: 100%; object-fit: cover;">
+        <div class="sock-collage-overlay-layer" style="background-color: rgba(91, 141, 184, 0.12);"></div>
+      </div>
+      
+      <!-- Detail 2 (Bottom Right - Perfect Square) -->
+      <div class="sock-collage-right-img sock-collage-img-wrapper" style="width: calc(50% - 4px); aspect-ratio: 1 / 1; overflow: hidden; border-radius: 14px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);">
+        <img src="https://i.ibb.co/Mx1BY5RN/Updated-2025-Sock101-Presentation-4-6.jpg?format=750w?w=600&q=80" 
+             alt="Sock pattern layouts" 
+             style="width: 100%; height: 100%; object-fit: cover;">
+        <div class="sock-collage-overlay-layer" style="background-color: rgba(91, 141, 184, 0.12);"></div>
+      </div>
+      
+    </div>
+    
+  </div>
+</div>
+</div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- SLIDE 08: Onsite Hat Activation -->
+  <!-- SLIDE 08: Custom Scented Candle -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full h-screen bg-gradient-to-br from-[#F8F7F4] via-[#F8F7F4] to-[#E5E3DE] relative overflow-hidden">
+        
+        <!-- Floating circles for background decoration -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        
+        <div class="w-full h-full grid lg:grid-cols-2">
+          <!-- Text and Features Column -->
+          <div class="flex items-center justify-center px-8 lg:px-16 py-12">
+            <div class="max-w-xl w-full">
+              <span class="inline-block text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-4 animate-slide-up">Experience 05</span>
+              
+              <h2 class="text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-6 leading-tight animate-slide-up animation-delay-200">
+                Custom Scented<br>
+                <span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Candle Bar</span>
+              </h2>
+              
+              <p class="text-[#666666] leading-relaxed mb-8 text-lg animate-slide-up animation-delay-300">
+                An elevated sensory experience. Guests select and customize a premium, clean-burning candle housed in customized, pre-branded vessels.
+              </p>
+              
+              <!-- Core Activation Highlights -->
+              <div class="space-y-4 animate-slide-up animation-delay-400">
+                
+                <!-- Scent Selection Feature -->
+                <div class="group p-5 bg-white border-l-4 border-[#5B8DB8] rounded-r-xl hover:shadow-lg transition-all duration-300">
+                  <p class="text-xs tracking-widest text-[#999999] uppercase mb-1.5 font-semibold">01 / Custom Fragrance Profiles</p>
+                  <p class="font-bold text-[#1A1A1A] text-base lg:text-lg mb-1">Tailored Sensory Menu</p>
+                  <p class="text-sm text-[#666666]">Choose from clean & fresh, earthy & outdoorsy, sweet, floral, or warm & luxurious seasonal profiles.</p>
+                </div>
+                
+                <!-- Premium Ingredients Feature -->
+                <div class="group p-5 bg-white border-l-4 border-[#5B8DB8] rounded-r-xl hover:shadow-lg transition-all duration-300">
+                  <p class="text-xs tracking-widest text-[#999999] uppercase mb-1.5 font-semibold">02 / Clean Craftsmanship</p>
+                  <p class="font-bold text-[#1A1A1A] text-base lg:text-lg mb-1">Luxury Plant-Based Wax</p>
+                  <p class="text-sm text-[#666666]">Made with natural vegan coconut apricot wax, organic cotton wicks, and phthalate-free fragrance oils.</p>
+                </div>
+                
+                <!-- Burn Quality Feature -->
+                <div class="group p-5 bg-white border-l-4 border-[#5B8DB8] rounded-r-xl hover:shadow-lg transition-all duration-300">
+                  <p class="text-xs tracking-widest text-[#999999] uppercase mb-1.5 font-semibold">03 / Long-Lasting Keepsake</p>
+                  <p class="font-bold text-[#1A1A1A] text-base lg:text-lg mb-1">True-to-Scent Burn</p>
+                  <p class="text-sm text-[#666666]">Provides an exceptional scent throw and clean, steady burn time of approximately 80 hours.</p>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          
+          <!-- Image Column -->
+          <div class="relative h-full overflow-hidden animate-slide-left animation-delay-300">
+            <img src="https://www.inluro.com/cdn/shop/files/Agave_White_Candle_Inluro.jpg?v=1747930835&width=1080?w=1920&q=100" alt="Premium candle curation" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+            <div class="absolute inset-0 bg-gradient-to-l from-transparent to-[#F8F7F4]/20"></div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
+    <!-- SLIDE 09: Onsite Hat Activation -->
     <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
       <div class="w-full min-h-screen relative overflow-hidden bg-[#1A1A1A]">
         <div class="absolute inset-0">
-          <img src="https://images.pexels.com/photos/32073510/pexels-photo-32073510.jpeg?w=1920&q=100" alt="Hat activation" class="w-full h-full object-cover">
+          <img src="https://static1.squarespace.com/static/658cd50637ae120a2702570a/t/683dba6ed7d4051516f7da7f/1748875890384/Trucker+Hat+Bar1.JPG?w=1920&q=100" alt="Hat activation" class="w-full h-full object-cover">
           <div class="absolute inset-y-0 left-0 w-full lg:w-2/3 bg-gradient-to-r from-[#1A1A1A] via-[#1A1A1A]/95 to-transparent z-0"></div>
         </div>
         <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
@@ -494,8 +917,8 @@
         <div class="relative z-10 w-full min-h-screen flex items-center justify-center px-8 md:px-16">
           <div class="w-full max-w-7xl grid lg:grid-cols-2 gap-16 items-center">
             <div class="max-w-xl animate-slide-right">
-              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 05</p>
-              <h2 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">Onsite Hat<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Activation</span></h2>
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 06</p>
+              <h2 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">Hat Bar<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Activation</span></h2>
               <p class="text-white/80 text-xl leading-relaxed mb-10">Personalize hats on site with curated design elements, branded details, or custom enhancements for a one-of-a-kind experience.</p>
               <div class="space-y-4">
                 <div class="group flex items-start gap-4 cursor-default">
@@ -515,13 +938,13 @@
             <!-- Foreground Collage -->
             <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-left animation-delay-300">
               <div class="col-span-2 overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.pexels.com/photos/32073510/pexels-photo-32073510.jpeg?w=800&q=80" alt="Hats" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                <img src="https://images.squarespace-cdn.com/content/v1/658cd50637ae120a2702570a/e7f650e8-0fbe-4685-bda3-c0b516732c8c/Bucket+Hat+Bar2.JPG?format=750w?w=800&q=80" alt="Hats" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
               </div>
               <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1521369909029-2afed882ba28?w=800&q=80" alt="Hats" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                <img src="https://images.squarespace-cdn.com/content/v1/658cd50637ae120a2702570a/02f9c6f6-b419-49d0-be11-f41fd3d6c9b5/Trucker+Hat+Bar4.JPG?format=750w?w=800&q=80" alt="Hats" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
               </div>
               <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1534215754734-18e55d13e346?w=800&q=80" alt="Hat worn" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                <img src="https://images.squarespace-cdn.com/content/v1/658cd50637ae120a2702570a/02aa2597-e004-457c-9cde-f6ca0792eeda/Bucket+Hat+Bar3.JPG?format=750w?w=800&q=80" alt="Hat worn" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
               </div>
             </div>
           </div>
@@ -529,7 +952,7 @@
       </div>
     </div>
 
-    <!-- SLIDE 09: Sunglasses Experience -->
+    <!-- SLIDE 10: Sunglasses Experience -->
     <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
       <div class="w-full min-h-screen bg-gradient-to-br from-[#F8F7F4] via-[#F8F7F4] to-[#E5E3DE] relative overflow-hidden">
         <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
@@ -544,7 +967,7 @@
             <div class="py-20">
               <div class="flex items-center gap-4 mb-8 animate-slide-right">
                 <div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center shadow-lg">
-                  <span class="text-sm font-bold text-white">06</span>
+                  <span class="text-sm font-bold text-white">07</span>
                 </div>
                 <span class="text-sm font-medium tracking-widest text-[#999999] uppercase">Experience</span>
               </div>
@@ -581,9 +1004,269 @@
       </div>
     </div>
 
-    <!-- SLIDE 10: Custom Scented Candle -->
+     <!-- SLIDE 11: On-site Printing Gallery -->
     <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
-      <div class="w-full h-screen bg-gradient-to-br from-[#F8F7F4] via-[#F8F7F4] to-[#E5E3DE] relative overflow-hidden">
+      <div class="w-full min-h-screen bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-white/10 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-white/10 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 py-20">
+          <div class="grid lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-gradient-to-br from-[#2A2A2A] to-[#1A1A1A] p-8 lg:p-12 rounded-2xl border border-white/10 animate-slide-right">
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 08</p>
+              <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">On-site<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Printing Gallery</span></h2>
+              <p class="text-white/70 text-lg leading-relaxed mb-10 max-w-xl">Gallery slide showing examples and photos of onsite screen printing and live customization setups in action.</p>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
+                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Visuals</p>
+                  <p class="text-sm text-white/50">High-end setups</p>
+                </div>
+                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
+                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Action</p>
+                  <p class="text-sm text-white/50">Live printing demonstrations</p>
+                </div>
+              </div>
+            </div>
+            <div class="relative rounded-2xl overflow-hidden animate-slide-left animation-delay-300 group">
+              <img src="https://images.pexels.com/photos/33650433/pexels-photo-33650433.jpeg?w=1920&q=100" alt="Printing Gallery" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+              <div class="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/80 to-transparent"></div>
+              <div class="absolute bottom-6 left-6 right-6">
+                <p class="text-sm tracking-widest text-white/70 uppercase">Event Activations</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  <!-- SLIDE 12: Embroidery Stitching -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen bg-gradient-to-br from-[#F8F7F4] via-[#F8F7F4] to-[#E5E3DE] relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full min-h-screen flex items-center">
+          <div class="w-full max-w-7xl mx-auto px-8 md:px-16 grid lg:grid-cols-2 gap-16 items-center">
+            <div class="py-20">
+              <div class="flex items-center gap-4 mb-8 animate-slide-right">
+                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center shadow-lg">
+                  <span class="text-sm font-bold text-white">09</span>
+                </div>
+                <span class="text-sm font-medium tracking-widest text-[#999999] uppercase">Experience</span>
+              </div>
+              <h2 class="text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-6 leading-tight animate-slide-right animation-delay-200">Embroidery<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Stitching</span></h2>
+              <p class="text-[#666666] text-lg leading-relaxed mb-10 animate-slide-right animation-delay-300">Live embroidery activation where attendees personalize apparel and accessories with stitched designs and names.</p>
+              <div class="grid grid-cols-2 gap-3 animate-slide-right animation-delay-400">
+                <div class="group flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span class="text-sm font-medium text-[#1A1A1A]">Live Stitching</span>
+                </div>
+                <div class="group flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span class="text-sm font-medium text-[#1A1A1A]">Custom Names</span>
+                </div>
+                <div class="group flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span class="text-sm font-medium text-[#1A1A1A]">Logo Designs</span>
+                </div>
+                <div class="group flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span class="text-sm font-medium text-[#1A1A1A]">Apparel &amp; Accessories</span>
+                </div>
+              </div>
+            </div>
+<div class="relative animate-slide-left animation-delay-300" style="width: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box;">
+  
+  <!-- Scoped Animations for the Embroidery Stitching Collage -->
+  <style>
+    /* 1. Base Inactive States */
+    .stitch-collage-card-container {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    }
+    .stitch-collage-main-img {
+      opacity: 0;
+      transform: scale(0.95) translateY(20px);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+    }
+    .stitch-collage-left-img {
+      opacity: 0;
+      transform: scale(0.95) translateY(25px);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+    }
+    .stitch-collage-right-img {
+      opacity: 0;
+      transform: scale(0.95) translateY(25px);
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+    }
+
+    /* 2. Active Entrance Trigger (Staggered Animation build) */
+    .slide-item.is-active .stitch-collage-card-container {
+      opacity: 1;
+      transform: translateY(0);
+      animation: stitchIdleFloat 6s ease-in-out infinite;
+      animation-delay: 1.4s;
+    }
+    .slide-item.is-active .stitch-collage-main-img {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition-delay: 150ms;
+    }
+    .slide-item.is-active .stitch-collage-left-img {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition-delay: 300ms;
+    }
+    .slide-item.is-active .stitch-collage-right-img {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      transition-delay: 450ms;
+    }
+
+    /* 3. Smooth Hover Transitions */
+    .stitch-collage-img-wrapper img {
+      transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .stitch-collage-img-wrapper:hover img {
+      transform: scale(1.05);
+    }
+    .stitch-collage-overlay-layer {
+      position: absolute;
+      inset: 0;
+      transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+    .stitch-collage-img-wrapper:hover .stitch-collage-overlay-layer {
+      background-color: transparent !important;
+    }
+
+    /* 4. Gentle Float Loop */
+    @keyframes stitchIdleFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-6px); }
+    }
+  </style>
+
+  <!-- Expanded Square Grid Container -->
+  <div class="stitch-collage-card-container" 
+       style="position: relative; width: 100%; max-width: 590px; aspect-ratio: 1 / 1; display: flex; flex-direction: column; gap: 8px; box-sizing: border-box;">
+    
+    <!-- Hero Image (Top - Exactly 2:1 Landscape Rectangle with Rounded Corners) -->
+    <div class="stitch-collage-main-img stitch-collage-img-wrapper" style="width: 100%; aspect-ratio: 2 / 1; overflow: hidden; border-radius: 14px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);">
+      <img src="https://www.digitaleventsinc.com/wp-content/uploads/2022/01/Embroiderd-Sports-Hats.webp?w=1920&q=100" 
+           alt="Embroidery Stitching details" 
+           style="width: 100%; height: 100%; object-fit: cover;">
+      <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.25), transparent); pointer-events: none;"></div>
+    </div>
+    
+    <!-- Bottom Row (Two Rounded Perfect Squares) -->
+    <div style="width: 100%; display: flex; gap: 8px;">
+      
+      <!-- Detail 1 (Bottom Left - Perfect Square) -->
+      <div class="stitch-collage-left-img stitch-collage-img-wrapper" style="width: calc(50% - 4px); aspect-ratio: 1 / 1; overflow: hidden; border-radius: 14px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);">
+        <img src="https://www.digitaleventsinc.com/wp-content/uploads/2022/01/Embroidered-Adidas-Pants.webp?w=600&q=80" 
+             alt="Vibrant spools of thread" 
+             style="width: 100%; height: 100%; object-fit: cover;">
+        <div class="stitch-collage-overlay-layer" style="background-color: rgba(91, 141, 184, 0.12);"></div>
+      </div>
+      
+      <!-- Detail 2 (Bottom Right - Perfect Square) -->
+      <div class="stitch-collage-right-img stitch-collage-img-wrapper" style="width: calc(50% - 4px); aspect-ratio: 1 / 1; overflow: hidden; border-radius: 14px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);">
+        <img src="https://www.digitaleventsinc.com/wp-content/uploads/2022/01/Customizing-Hats.webp?w=600&q=80" 
+             alt="Stitched fabric and custom patterns" 
+             style="width: 100%; height: 100%; object-fit: cover;">
+        <div class="stitch-collage-overlay-layer" style="background-color: rgba(91, 141, 184, 0.12);"></div>
+      </div>
+      
+    </div>
+    
+  </div>
+</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+   <!-- SLIDE 13: Laser Engraving -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full h-screen relative overflow-hidden bg-[#1A1A1A]">
+        <!-- Pure Background Image & Overlay -->
+        <div class="absolute inset-0">
+          <img src="https://images.unsplash.com/photo-1612403211516-fb15bb02e260?w=1920&q=100" alt="Laser Engraving" class="w-full h-full object-cover object-center">
+          <div class="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-[#1A1A1A]/90 to-[#1A1A1A]/80"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-[#5B8DB8]/20 to-transparent"></div>
+        </div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
+        </div>
+        <!-- Foreground Content -->
+        <div class="relative z-10 w-full h-full flex items-center justify-center px-8 md:px-16">
+          <div class="w-full max-w-7xl grid lg:grid-cols-2 gap-16 items-center">
+            <div class="bg-black/40 backdrop-blur-md border border-white/10 p-8 lg:p-10 shadow-2xl rounded-2xl animate-slide-right">
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-3">Experience 10</p>
+              <h2 class="text-3xl lg:text-5xl font-bold text-white mb-4 leading-tight">Laser<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Engraving</span></h2>
+              <p class="text-white/70 text-base leading-relaxed mb-8">Onsite laser engraving experience for premium items such as wallets, tumblers, tags, and accessories.</p>
+              <div class="space-y-4">
+                <div class="group flex items-center gap-4 cursor-default">
+                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+                    <span class="text-sm font-bold text-white">1</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Precision Focus</p>
+                    <p class="text-sm text-white/50">High quality laser detailing</p>
+                  </div>
+                </div>
+                <div class="group flex items-center gap-4 cursor-default">
+                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+                    <span class="text-sm font-bold text-white">2</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Wide Range</p>
+                    <p class="text-sm text-white/50">Works on multiple materials</p>
+                  </div>
+                </div>
+                <div class="group flex items-center gap-4 cursor-default">
+                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+                    <span class="text-sm font-bold text-white">3</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Take Home Gift</p>
+                    <p class="text-sm text-white/50">Memorable custom items</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Foreground Collage -->
+            <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-left animation-delay-300">
+              <div class="col-span-2 overflow-hidden rounded-2xl shadow-2xl">
+                <img src="https://www.digitaleventsinc.com/wp-content/uploads/2022/01/Laser-Engraving.webp?w=800&q=80" alt="Laser working" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+              </div>
+              <div class="overflow-hidden rounded-2xl shadow-2xl">
+                <img src="https://www.digitaleventsinc.com/wp-content/uploads/2022/01/Laser-Engraved-Tag.webp?w=800&q=80" alt="Laser Engraving" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+              </div>
+              <div class="overflow-hidden rounded-2xl shadow-2xl">
+                <img src="https://www.digitaleventsinc.com/wp-content/uploads/2022/01/LaserEngravingNFT.webp?w=800&q=80" alt="Engraved wood" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+ <!-- SLIDE 14: Heat Transfers -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full h-screen bg-[#F8F7F4] relative overflow-hidden">
         <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
           <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
           <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
@@ -592,49 +1275,550 @@
           <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
         </div>
         <div class="w-full h-full grid lg:grid-cols-2">
-          <div class="flex items-center justify-center px-8 lg:px-12 py-12">
-            <div class="max-w-md">
-              <span class="inline-block text-6xl font-bold bg-gradient-to-b from-[#5B8DB8]/30 to-transparent bg-clip-text text-transparent mb-4 animate-slide-up">07</span>
-              <h2 class="text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-4 animate-slide-up animation-delay-200">Custom Scented <span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Candle</span></h2>
-              <p class="text-base text-[#666666] mb-8 animate-slide-up animation-delay-300">Create personalized candles by selecting from curated scents, vessel styles, and branded design elements.</p>
-              <div class="space-y-3 animate-slide-up animation-delay-400">
-                <div class="group flex items-start gap-4 p-4 bg-white rounded-xl hover:shadow-lg transition-all duration-300">
-                  <div class="w-10 h-10 rounded-full bg-[#5B8DB8]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#5B8DB8] transition-all duration-300">
-                    <span class="text-lg font-bold text-[#5B8DB8] group-hover:text-white transition-colors duration-300">1</span>
-                  </div>
-                  <div>
-                    <h3 class="font-bold text-[#1A1A1A]">Pick a Scent</h3>
-                    <p class="text-sm text-[#666666]">Choose from our curated fragrance collection</p>
-                  </div>
+          <!-- Foreground Collage as Left Column -->
+          <div class="relative h-full w-full grid grid-cols-2 grid-rows-2 gap-1 overflow-hidden animate-slide-right">
+            <div class="col-span-2 relative overflow-hidden group">
+               <img src="https://www.digitaleventsinc.com/wp-content/uploads/2024/06/custom_Vinyl_2000x.jpg?w=800&q=80" alt="Heat Transfers" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            </div>
+            <div class="relative overflow-hidden group">
+               <img src="https://www.digitaleventsinc.com/wp-content/uploads/2024/06/rhinestones-lifestyle.webp?w=800&q=80" alt="Apparel" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            </div>
+            <div class="relative overflow-hidden group">
+               <img src="https://www.digitaleventsinc.com/wp-content/uploads/2024/06/IMG_3110.jpg?w=800&q=80" alt="Custom patch" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            </div>
+            <div class="absolute top-8 left-8 bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] text-white px-5 py-2.5 rounded-full shadow-lg z-10">
+              <p class="text-sm font-medium tracking-wider">Live Customization</p>
+            </div>
+          </div>
+          <div class="flex items-center px-8 lg:px-12 py-10 bg-gradient-to-br from-[#F8F7F4] to-[#EBE9E4]">
+            <div class="max-w-md w-full">
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-4 animate-slide-left">Experience 11</p>
+              <h2 class="text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-4 leading-tight animate-slide-left animation-delay-200">Heat<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Transfers</span></h2>
+              <p class="text-[#666666] text-base leading-relaxed mb-6 animate-slide-left animation-delay-300">Heat transfer apparel customization experience with patches, graphics, and branding applied onsite.</p>
+              <div class="space-y-2 animate-slide-left animation-delay-400">
+                <div class="group flex justify-between py-3 border-b border-[#E5E3DE] hover:border-[#5B8DB8] transition-colors cursor-default">
+                  <span class="text-[#666666] text-sm group-hover:text-[#1A1A1A] transition-colors">Style</span>
+                  <span class="font-semibold text-[#1A1A1A] text-sm group-hover:text-[#5B8DB8] transition-colors">Apparel &amp; Accessories</span>
                 </div>
-                <div class="group flex items-start gap-4 p-4 bg-white rounded-xl hover:shadow-lg transition-all duration-300">
-                  <div class="w-10 h-10 rounded-full bg-[#5B8DB8]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#5B8DB8] transition-all duration-300">
-                    <span class="text-lg font-bold text-[#5B8DB8] group-hover:text-white transition-colors duration-300">2</span>
-                  </div>
-                  <div>
-                    <h3 class="font-bold text-[#1A1A1A]">Make Your Candle</h3>
-                    <p class="text-sm text-[#666666]">Create a personalized vessel</p>
-                  </div>
+                <div class="group flex justify-between py-3 border-b border-[#E5E3DE] hover:border-[#5B8DB8] transition-colors cursor-default">
+                  <span class="text-[#666666] text-sm group-hover:text-[#1A1A1A] transition-colors">Elements</span>
+                  <span class="font-semibold text-[#1A1A1A] text-sm group-hover:text-[#5B8DB8] transition-colors">Patches &amp; Graphics</span>
                 </div>
-                <div class="group flex items-start gap-4 p-4 bg-white rounded-xl hover:shadow-lg transition-all duration-300">
-                  <div class="w-10 h-10 rounded-full bg-[#5B8DB8]/10 flex items-center justify-center flex-shrink-0 group-hover:bg-[#5B8DB8] transition-all duration-300">
-                    <span class="text-lg font-bold text-[#5B8DB8] group-hover:text-white transition-colors duration-300">3</span>
-                  </div>
-                  <div>
-                    <h3 class="font-bold text-[#1A1A1A]">Take Home</h3>
-                    <p class="text-sm text-[#666666]">Enjoy your unique creation</p>
-                  </div>
+                <div class="group flex justify-between py-3 border-b border-[#E5E3DE] hover:border-[#5B8DB8] transition-colors cursor-default">
+                  <span class="text-[#666666] text-sm group-hover:text-[#1A1A1A] transition-colors">Speed</span>
+                  <span class="font-semibold text-[#1A1A1A] text-sm group-hover:text-[#5B8DB8] transition-colors">Fast Turnaround</span>
                 </div>
               </div>
             </div>
           </div>
-          <div class="relative h-full overflow-hidden animate-slide-left animation-delay-300">
-            <img src="https://d2a4od9fu45l0p.cloudfront.net/image/master/xlarge/26fe5941eb2b4cd5804aec7c1b44cffb.jpg?w=1920&q=100" alt="Candle making" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
-            <div class="absolute inset-0 bg-gradient-to-l from-transparent to-[#F8F7F4]/20"></div>
+        </div>
+      </div>
+    </div>
+
+<!-- SLIDE 15: Product Printing -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen relative overflow-hidden bg-[#1A1A1A]">
+        <!-- Pure BG + Overlay -->
+        <div class="absolute inset-0">
+          <img src="https://www.digitaleventsinc.com/wp-content/uploads/2022/01/GroupofGirlsShowingBags.webp?w=1920&q=100" alt="Product Printing" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/95 via-[#1A1A1A]/80 to-transparent"></div>
+        </div>
+        <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-br from-[#5B8DB8]/80 to-[#4A7CA6]/80 clip-diagonal-reverse"></div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
+        </div>
+        <!-- Foreground Content -->
+        <div class="relative z-10 w-full min-h-screen flex items-center">
+          <div class="w-full max-w-7xl mx-auto px-8 md:px-16 py-20 grid lg:grid-cols-2 gap-16 items-center">
+            <div class="animate-slide-right">
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 12</p>
+              <h2 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">Product<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Printing</span></h2>
+              <p class="text-white/80 text-xl leading-relaxed mb-12">Live product printing activation for tote bags, bottles, gift items, and promotional products.</p>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
+                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <div>
+                    <p class="text-xs text-white/50 uppercase tracking-wider">Totes</p>
+                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Customized</p>
+                  </div>
+                </div>
+                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
+                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <div>
+                    <p class="text-xs text-white/50 uppercase tracking-wider">Bottles</p>
+                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Printed Live</p>
+                  </div>
+                </div>
+                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
+                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <div>
+                    <p class="text-xs text-white/50 uppercase tracking-wider">Branding</p>
+                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Enhanced</p>
+                  </div>
+                </div>
+                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
+                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <div>
+                    <p class="text-xs text-white/50 uppercase tracking-wider">Execution</p>
+                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Flawless</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Foreground Collage nested within the clip diagonal effect visually -->
+            <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-left animation-delay-300">
+              <div class="col-span-2 overflow-hidden rounded-2xl shadow-2xl">
+                <img src="https://www.digitaleventsinc.com/wp-content/uploads/2022/01/CustomizedTotes.webp?w=800&q=80" alt="Product Printing" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+              </div>
+              <div class="overflow-hidden rounded-2xl shadow-2xl">
+                <img src="https://www.digitaleventsinc.com/wp-content/uploads/2022/01/Tote-Bag-Printing.webp?w=800&q=80" alt="Screen print" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+              </div>
+              <div class="overflow-hidden rounded-2xl shadow-2xl">
+                <img src="https://www.digitaleventsinc.com/wp-content/uploads/2022/01/Gov-Ball-5.webp?w=800&q=80" alt="Tote bag" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
+
+ <!-- SLIDE 16: Garment Printing -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full h-screen relative overflow-hidden bg-[#1A1A1A]">
+        <!-- Pure Background Image & Overlay -->
+        <div class="absolute inset-0">
+          <img src="https://www.digitaleventsinc.com/wp-content/uploads/2022/01/Comm-Classic-2.webp?w=1920&q=100" alt="Garment Printing" class="w-full h-full object-cover object-center">
+          <div class="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-[#1A1A1A]/90 to-[#1A1A1A]/80"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-[#5B8DB8]/20 to-transparent"></div>
+        </div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle z-0">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
+        </div>
+        <!-- Foreground Content -->
+        <div class="relative z-10 w-full h-full flex items-center justify-center px-8 md:px-16">
+          <div class="w-full max-w-7xl grid lg:grid-cols-2 gap-16 items-center">
+            <div class="bg-black/40 backdrop-blur-md border border-white/10 p-8 lg:p-10 shadow-2xl rounded-2xl animate-slide-right">
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-3">Experience 13</p>
+              <h2 class="text-3xl lg:text-5xl font-bold text-white mb-4 leading-tight">Garment<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Printing</span></h2>
+              <p class="text-white/70 text-base leading-relaxed mb-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
+              <div class="space-y-4">
+                <div class="group flex items-center gap-4 cursor-default">
+                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+                    <span class="text-sm font-bold text-white">1</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Dolor Sit Amet</p>
+                    <p class="text-sm text-white/50">Consectetur adipiscing elit</p>
+                  </div>
+                </div>
+                <div class="group flex items-center gap-4 cursor-default">
+                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+                    <span class="text-sm font-bold text-white">2</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Sed Do Eiusmod</p>
+                    <p class="text-sm text-white/50">Tempor incididunt ut labore</p>
+                  </div>
+                </div>
+                <div class="group flex items-center gap-4 cursor-default">
+                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
+                    <span class="text-sm font-bold text-white">3</span>
+                  </div>
+                  <div>
+                    <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Magna Aliqua</p>
+                    <p class="text-sm text-white/50">Ut enim ad minim veniam</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Foreground Collage -->
+            <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-left animation-delay-300">
+              <div class="col-span-2 overflow-hidden rounded-2xl shadow-2xl">
+                <img src="https://www.digitaleventsinc.com/wp-content/uploads/2022/01/CustimizationStation.webp?w=800&q=80" alt="Garment Printing 1" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+              </div>
+              <div class="overflow-hidden rounded-2xl shadow-2xl">
+                <img src="https://www.digitaleventsinc.com/wp-content/uploads/2022/01/Enterprise-Connect-6.webp?w=800&q=80" alt="Garment Printing 2" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+              </div>
+              <div class="overflow-hidden rounded-2xl shadow-2xl">
+                <img src="https://www.digitaleventsinc.com/wp-content/uploads/2022/01/GirlPressingTshirt.webp?w=800&q=80" alt="Garment Printing 3" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <!-- SLIDE 17: Custom Jibbitz & Crocs -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen bg-[#F8F7F4] relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle z-0">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+        </div>
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 py-20 grid lg:grid-cols-2 gap-16 items-center">
+          <div class="animate-slide-right">
+            <div class="inline-flex items-center gap-4 mb-6">
+              <span class="text-6xl font-bold bg-gradient-to-b from-[#5B8DB8]/40 to-transparent bg-clip-text text-transparent">14</span>
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-[#1A1A1A] mb-4">Custom Jibbitz &amp; <span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Crocs</span></h2>
+            <p class="text-lg text-[#666666] mb-8 leading-relaxed">Personalize items with curated Jibbitz charms, patches, and branded embellishments for a fun, interactive keepsake.</p>
+            <div class="space-y-4 mb-8">
+              <div class="group flex items-center gap-4 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-md">
+                  <span class="text-sm font-bold text-white">1</span>
+                </div>
+                <div>
+                  <p class="font-bold text-[#1A1A1A] text-sm">Choose Base</p>
+                  <p class="text-xs text-[#666666]">Select your preferred Crocs or tote</p>
+                </div>
+              </div>
+              <div class="group flex items-center gap-4 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-md">
+                  <span class="text-sm font-bold text-white">2</span>
+                </div>
+                <div>
+                  <p class="font-bold text-[#1A1A1A] text-sm">Add Charms</p>
+                  <p class="text-xs text-[#666666]">Customize with Jibbitz and patches</p>
+                </div>
+              </div>
+              <div class="group flex items-center gap-4 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
+                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-md">
+                  <span class="text-sm font-bold text-white">3</span>
+                </div>
+                <div>
+                  <p class="font-bold text-[#1A1A1A] text-sm">Take Home</p>
+                  <p class="text-xs text-[#666666]">Leave with your personalized item</p>
+                </div>
+              </div>
+            </div>
+            <div class="flex gap-6 text-center text-[#1A1A1A]">
+              <div>
+                <p class="text-2xl font-bold">500</p>
+                <p class="text-xs text-[#666666]">Min. charms</p>
+              </div>
+              <div>
+                <p class="text-2xl font-bold">250+</p>
+                <p class="text-xs text-[#666666]">Participants</p>
+              </div>
+            </div>
+          </div>
+          <!-- Foreground Collage -->
+          <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-left animation-delay-300">
+            <div class="col-span-2 overflow-hidden rounded-2xl shadow-xl">
+              <img src="https://images.unsplash.com/photo-1603487742131-4160ec999306?w=800&q=80" alt="Crocs" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+            </div>
+            <div class="overflow-hidden rounded-2xl shadow-xl">
+              <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&q=80" alt="Charms" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+            </div>
+            <div class="overflow-hidden rounded-2xl shadow-xl">
+              <img src="https://images.unsplash.com/photo-1600269450099-58dd58af908e?w=800&q=80" alt="Accessories" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+ <!-- SLIDE 18: Tecovas Fitting -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen relative overflow-hidden bg-[#1A1A1A]">
+        <!-- Pure Background Image & Overlay -->
+        <div class="absolute inset-0">
+          <img src="https://i.ibb.co/xt0jVxF1/481508573-955951986683677-1730423715801383732-n.jpg?w=1920&q=100" alt="Tecovas boots" class="w-full h-full object-cover">
+          <div class="absolute inset-y-0 right-0 w-full lg:w-2/3 bg-gradient-to-l from-[#1A1A1A] via-[#1A1A1A]/95 to-transparent z-0"></div>
+        </div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle z-0">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/20 animate-float-medium" style="top:60%;right:-3%"></div>
+        </div>
+        <!-- Foreground Content -->
+        <div class="relative z-10 w-full min-h-screen grid lg:grid-cols-2 max-w-7xl mx-auto px-8 md:px-16 gap-16">
+          <!-- Foreground Collage -->
+          <div class="flex items-center w-full h-full">
+             <div class="w-full grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-right animation-delay-300">
+                <div class="col-span-2 overflow-hidden rounded-2xl shadow-2xl">
+                  <img src="https://i.ibb.co/wnwbkQy/Tecovas2.png?w=800&q=80" alt="Tecovas boots" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                </div>
+                <div class="overflow-hidden rounded-2xl shadow-2xl">
+                  <img src="https://i.ibb.co/JW2DGVft/Tecovas3.png?w=800&q=80" alt="Cowboy boots" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                </div>
+                <div class="overflow-hidden rounded-2xl shadow-2xl">
+                  <img src="https://images.unsplash.com/photo-1587560699334-bea93391dcef?w=800&q=80" alt="Leather boot" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+                </div>
+             </div>
+          </div>
+          <!-- Text Box -->
+          <div class="flex items-center py-16">
+            <div class="max-w-lg animate-slide-left">
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 15</p>
+              <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">Tecovas<br>Fitting</h2>
+              <p class="text-white/90 text-lg leading-relaxed mb-10">Explore and select premium western footwear in an elevated, retail-inspired setting. Craftsmanship, style, and luxury.</p>
+              <div class="space-y-4">
+                <div class="group flex items-start gap-4 cursor-default">
+                  <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
+                    <div class="w-2 h-2 rounded-full bg-[#5B8DB8]"></div>
+                  </div>
+                  <p class="text-white/90 group-hover:text-white transition-colors">A minimum order is required. Final minimums and event costs will depend on your specific program.</p>
+                </div>
+                <div class="group flex items-start gap-4 cursor-default">
+                  <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
+                    <div class="w-2 h-2 rounded-full bg-[#5B8DB8]"></div>
+                  </div>
+                  <p class="text-white/90 group-hover:text-white transition-colors">Staffing, labor, and transportation outlined ahead with no surprises.</p>
+                </div>
+                <div class="group flex items-start gap-4 cursor-default">
+                  <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
+                    <div class="w-2 h-2 rounded-full bg-[#5B8DB8]"></div>
+                  </div>
+                  <p class="text-white/90 group-hover:text-white transition-colors">Every program is customized based on your goals, audience, and event needs.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+ <!-- SLIDE 19: Onsite Apparel Pop-Up -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen relative overflow-hidden bg-[#1A1A1A]">
+        <!-- Pure Background Image & Overlay -->
+        <div class="absolute inset-0">
+          <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=100" alt="Apparel pop-up" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/95 via-[#1A1A1A]/80 to-transparent"></div>
+        </div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
+        </div>
+        <!-- Foreground Content -->
+        <div class="relative z-10 w-full min-h-screen flex items-center">
+          <div class="w-full max-w-7xl mx-auto px-8 md:px-16 py-20 grid lg:grid-cols-2 gap-16 items-center">
+            <div class="animate-slide-right">
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 16</p>
+              <h2 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">Onsite Apparel<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Pop-Up</span></h2>
+              <p class="text-white/80 text-xl leading-relaxed mb-12">An immersive retail-inspired setting where guests explore and select curated branded apparel.</p>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
+                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <div>
+                    <p class="text-xs text-white/50 uppercase tracking-wider">Styles</p>
+                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Curated</p>
+                  </div>
+                </div>
+                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
+                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <div>
+                    <p class="text-xs text-white/50 uppercase tracking-wider">Inventory</p>
+                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Planned</p>
+                  </div>
+                </div>
+                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
+                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <div>
+                    <p class="text-xs text-white/50 uppercase tracking-wider">Branding</p>
+                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Optional</p>
+                  </div>
+                </div>
+                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
+                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <div>
+                    <p class="text-xs text-white/50 uppercase tracking-wider">Staffing</p>
+                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Included</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Foreground Collage -->
+            <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-left animation-delay-300">
+              <div class="col-span-2 overflow-hidden rounded-2xl shadow-2xl">
+                <img src="https://images.pexels.com/photos/30940601/pexels-photo-30940601.jpeg?w=800&q=80" alt="Apparel pop-up" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+              </div>
+              <div class="overflow-hidden rounded-2xl shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1528892952291-009c663ce843?w=800&q=80" alt="Apparel rack" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+              </div>
+              <div class="overflow-hidden rounded-2xl shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=800&q=80" alt="Clothing store" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+      <!-- SLIDE 20: Onsite Golf Events -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen relative overflow-hidden">
+        <!-- Pure Background Image & Overlay -->
+        <div class="absolute inset-0">
+          <img src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=1920&q=100" alt="Golf events" class="w-full h-full object-cover">
+          <div class="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/95 via-[#1A1A1A]/80 to-[#1A1A1A]/40"></div>
+        </div>
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
+        </div>
+        <!-- Foreground Content -->
+        <div class="relative z-10 w-full min-h-screen flex items-center">
+          <div class="w-full max-w-7xl mx-auto px-8 md:px-16 grid lg:grid-cols-2 gap-16 items-center">
+            <div class="animate-slide-right">
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 17</p>
+              <h2 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">Onsite<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Golf Events</span></h2>
+              <p class="text-white/80 text-lg leading-relaxed mb-10">An elevated retail-inspired experience featuring premium golf essentials: custom belt fittings, golf shoes, apparel, and more.</p>
+              <div class="grid grid-cols-2 gap-4">
+                <div class="group flex items-center gap-3 cursor-default bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span class="text-white/80 group-hover:text-white transition-colors text-sm">Built per event</span>
+                </div>
+                <div class="group flex items-center gap-3 cursor-default bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span class="text-white/80 group-hover:text-white transition-colors text-sm">Scalable size</span>
+                </div>
+                <div class="group flex items-center gap-3 cursor-default bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span class="text-white/80 group-hover:text-white transition-colors text-sm">Creative direction</span>
+                </div>
+                <div class="group flex items-center gap-3 cursor-default bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span class="text-white/80 group-hover:text-white transition-colors text-sm">Fully customizable</span>
+                </div>
+              </div>
+            </div>
+            <!-- Foreground Collage -->
+            <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-left animation-delay-300">
+              <div class="col-span-2 overflow-hidden rounded-2xl shadow-2xl">
+                <img src="https://images.pexels.com/photos/35320705/pexels-photo-35320705.jpeg?w=800&q=80" alt="Golf products" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+              </div>
+              <div class="overflow-hidden rounded-2xl shadow-2xl">
+                <img src="https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=800&q=80" alt="Golf club" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+              </div>
+              <div class="overflow-hidden rounded-2xl shadow-2xl">
+                <img src="https://images.pexels.com/photos/29026417/pexels-photo-29026417.jpeg?w=800&q=80" alt="Golf accessories" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- SLIDE 21: Live Stamping -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen bg-gradient-to-br from-[#F8F7F4] to-[#EBE9E4] flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="w-full h-full grid lg:grid-cols-2">
+          <div class="flex items-center px-8 lg:px-16 py-20 relative z-10">
+            <div class="max-w-xl animate-slide-right">
+              <div class="inline-flex items-center gap-3 mb-6">
+                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center shadow-lg">
+                  <span class="text-sm font-bold text-white">18</span>
+                </div>
+                <span class="text-sm font-medium tracking-widest text-[#999999] uppercase">Experience</span>
+              </div>
+              <h2 class="text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-6 leading-tight">Live<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Stamping</span></h2>
+              <p class="text-[#666666] text-lg leading-relaxed mb-8">Leather stamping activation using custom initials and logos with foil and embossing options.</p>
+              <div class="space-y-3 mb-8">
+                <div class="group flex items-center gap-3 text-[#666666] hover:text-[#1A1A1A] transition-colors cursor-default">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span>Foil embossing available</span>
+                </div>
+                <div class="group flex items-center gap-3 text-[#666666] hover:text-[#1A1A1A] transition-colors cursor-default">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span>Initials and logos supported</span>
+                </div>
+                <div class="group flex items-center gap-3 text-[#666666] hover:text-[#1A1A1A] transition-colors cursor-default">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span>Premium leather goods</span>
+                </div>
+                <div class="group flex items-center gap-3 text-[#666666] hover:text-[#1A1A1A] transition-colors cursor-default">
+                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
+                  <span>Turnkey live station</span>
+                </div>
+              </div>
+              <div class="inline-block p-6 bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-default">
+                <p class="text-white/80 text-sm mb-1">Experience</p>
+                <p class="text-2xl font-bold text-white">Classic Luxury</p>
+              </div>
+            </div>
+          </div>
+          <!-- Split Foreground Collage Right Side -->
+          <div class="relative h-full w-full grid grid-cols-2 grid-rows-2 gap-1 overflow-hidden animate-slide-left">
+            <div class="col-span-2 relative overflow-hidden group">
+               <img src="https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=800&q=80" alt="Live Stamping" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            </div>
+            <div class="relative overflow-hidden group">
+               <img src="https://images.unsplash.com/photo-1625804618797-009d73fc751a?w=800&q=80" alt="Leather" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            </div>
+            <div class="relative overflow-hidden group">
+               <img src="https://images.unsplash.com/photo-1580870059868-faa411bbdce2?w=800&q=80" alt="Stamping tools" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  <!-- SLIDE 22: Onsite Engraving -->
+    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+      <div class="w-full min-h-screen bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] flex items-center relative overflow-hidden">
+        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
+          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
+          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
+          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
+          <div class="absolute w-[100px] h-[100px] rounded-full border border-white/10 animate-float-medium" style="top:30%;right:15%"></div>
+          <div class="absolute w-[250px] h-[250px] rounded-full border border-white/10 animate-float-slow" style="bottom:-5%;right:30%"></div>
+        </div>
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 py-20">
+          <div class="grid lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 bg-gradient-to-br from-[#2A2A2A] to-[#1A1A1A] p-8 lg:p-12 rounded-2xl border border-white/10 animate-slide-right">
+              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 19</p>
+              <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">Onsite<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Engraving</span></h2>
+              <p class="text-white/70 text-lg leading-relaxed mb-10 max-w-xl">Personalize premium products with custom names, initials, or meaningful details, creating a unique keepsake in real time.</p>
+              <div class="grid sm:grid-cols-2 gap-4">
+                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
+                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Efficiency</p>
+                  <p class="text-sm text-white/50">Multiple engravers per event</p>
+                </div>
+                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
+                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Expertise</p>
+                  <p class="text-sm text-white/50">Professional artisans onsite</p>
+                </div>
+                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
+                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Pre-Plan</p>
+                  <p class="text-sm text-white/50">Sandblasted logos available</p>
+                </div>
+                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
+                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Turnkey</p>
+                  <p class="text-sm text-white/50">Fully managed setup</p>
+                </div>
+              </div>
+            </div>
+            <div class="relative rounded-2xl overflow-hidden animate-slide-left animation-delay-300 group">
+              <img src="https://images.pexels.com/photos/7254467/pexels-photo-7254467.jpeg?w=1920&q=100" alt="Engraving" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+              <div class="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/80 to-transparent"></div>
+              <div class="absolute bottom-6 left-6 right-6">
+                <p class="text-sm tracking-widest text-white/70 uppercase">Live Engraving</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  
+  
+ 
 
     <!-- SLIDE 11: Custom Fragrance Experience -->
     <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
@@ -702,6 +1886,7 @@
         </div>
       </div>
     </div>
+
 
     <!-- SLIDE 12: Luxury Perfume -->
     <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
@@ -933,654 +2118,17 @@
       </div>
     </div>
 
-    <!-- SLIDE 17: Custom Jibbitz & Crocs -->
-    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
-      <div class="w-full min-h-screen bg-[#F8F7F4] relative overflow-hidden">
-        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle z-0">
-          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
-          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
-          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
-        </div>
-        <div class="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 py-20 grid lg:grid-cols-2 gap-16 items-center">
-          <div class="animate-slide-right">
-            <div class="inline-flex items-center gap-4 mb-6">
-              <span class="text-6xl font-bold bg-gradient-to-b from-[#5B8DB8]/40 to-transparent bg-clip-text text-transparent">14</span>
-            </div>
-            <h2 class="text-4xl md:text-5xl font-bold text-[#1A1A1A] mb-4">Custom Jibbitz &amp; <span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Crocs</span></h2>
-            <p class="text-lg text-[#666666] mb-8 leading-relaxed">Personalize items with curated Jibbitz charms, patches, and branded embellishments for a fun, interactive keepsake.</p>
-            <div class="space-y-4 mb-8">
-              <div class="group flex items-center gap-4 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-md">
-                  <span class="text-sm font-bold text-white">1</span>
-                </div>
-                <div>
-                  <p class="font-bold text-[#1A1A1A] text-sm">Choose Base</p>
-                  <p class="text-xs text-[#666666]">Select your preferred Crocs or tote</p>
-                </div>
-              </div>
-              <div class="group flex items-center gap-4 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-md">
-                  <span class="text-sm font-bold text-white">2</span>
-                </div>
-                <div>
-                  <p class="font-bold text-[#1A1A1A] text-sm">Add Charms</p>
-                  <p class="text-xs text-[#666666]">Customize with Jibbitz and patches</p>
-                </div>
-              </div>
-              <div class="group flex items-center gap-4 p-4 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300">
-                <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-md">
-                  <span class="text-sm font-bold text-white">3</span>
-                </div>
-                <div>
-                  <p class="font-bold text-[#1A1A1A] text-sm">Take Home</p>
-                  <p class="text-xs text-[#666666]">Leave with your personalized item</p>
-                </div>
-              </div>
-            </div>
-            <div class="flex gap-6 text-center text-[#1A1A1A]">
-              <div>
-                <p class="text-2xl font-bold">500</p>
-                <p class="text-xs text-[#666666]">Min. charms</p>
-              </div>
-              <div>
-                <p class="text-2xl font-bold">250+</p>
-                <p class="text-xs text-[#666666]">Participants</p>
-              </div>
-            </div>
-          </div>
-          <!-- Foreground Collage -->
-          <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-left animation-delay-300">
-            <div class="col-span-2 overflow-hidden rounded-2xl shadow-xl">
-              <img src="https://images.unsplash.com/photo-1603487742131-4160ec999306?w=800&q=80" alt="Crocs" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-            </div>
-            <div class="overflow-hidden rounded-2xl shadow-xl">
-              <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=800&q=80" alt="Charms" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-            </div>
-            <div class="overflow-hidden rounded-2xl shadow-xl">
-              <img src="https://images.unsplash.com/photo-1600269450099-58dd58af908e?w=800&q=80" alt="Accessories" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+   
+   
+   
 
-    <!-- SLIDE 18: Tecovas Fitting -->
-    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
-      <div class="w-full min-h-screen relative overflow-hidden bg-[#1A1A1A]">
-        <!-- Pure Background Image & Overlay -->
-        <div class="absolute inset-0">
-          <img src="https://cdn.sanity.io/images/v8kybopt/production/27e1bee021dd0aa30ff6da4f58aae15f6ba219ed-2000x2500.png?w=1920&q=100" alt="Tecovas boots" class="w-full h-full object-cover">
-          <div class="absolute inset-y-0 right-0 w-full lg:w-2/3 bg-gradient-to-l from-[#1A1A1A] via-[#1A1A1A]/95 to-transparent z-0"></div>
-        </div>
-        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle z-0">
-          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/20 animate-float-slow" style="top:10%;left:-5%"></div>
-          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/20 animate-float-medium" style="top:60%;right:-3%"></div>
-        </div>
-        <!-- Foreground Content -->
-        <div class="relative z-10 w-full min-h-screen grid lg:grid-cols-2 max-w-7xl mx-auto px-8 md:px-16 gap-16">
-          <!-- Foreground Collage -->
-          <div class="flex items-center w-full h-full">
-             <div class="w-full grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-right animation-delay-300">
-                <div class="col-span-2 overflow-hidden rounded-2xl shadow-2xl">
-                  <img src="https://cdn.sanity.io/images/v8kybopt/production/27e1bee021dd0aa30ff6da4f58aae15f6ba219ed-2000x2500.png?w=800&q=80" alt="Tecovas boots" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-                </div>
-                <div class="overflow-hidden rounded-2xl shadow-2xl">
-                  <img src="https://images.unsplash.com/photo-1596700086884-69974fc060db?w=800&q=80" alt="Cowboy boots" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-                </div>
-                <div class="overflow-hidden rounded-2xl shadow-2xl">
-                  <img src="https://images.unsplash.com/photo-1587560699334-bea93391dcef?w=800&q=80" alt="Leather boot" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-                </div>
-             </div>
-          </div>
-          <!-- Text Box -->
-          <div class="flex items-center py-16">
-            <div class="max-w-lg animate-slide-left">
-              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 15</p>
-              <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">Tecovas<br>Fitting</h2>
-              <p class="text-white/90 text-lg leading-relaxed mb-10">Explore and select premium western footwear in an elevated, retail-inspired setting. Craftsmanship, style, and luxury.</p>
-              <div class="space-y-4">
-                <div class="group flex items-start gap-4 cursor-default">
-                  <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
-                    <div class="w-2 h-2 rounded-full bg-[#5B8DB8]"></div>
-                  </div>
-                  <p class="text-white/90 group-hover:text-white transition-colors">A minimum order is required. Final minimums and event costs will depend on your specific program.</p>
-                </div>
-                <div class="group flex items-start gap-4 cursor-default">
-                  <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
-                    <div class="w-2 h-2 rounded-full bg-[#5B8DB8]"></div>
-                  </div>
-                  <p class="text-white/90 group-hover:text-white transition-colors">Staffing, labor, and transportation outlined ahead with no surprises.</p>
-                </div>
-                <div class="group flex items-start gap-4 cursor-default">
-                  <div class="w-6 h-6 rounded-full bg-white flex items-center justify-center flex-shrink-0 mt-1 group-hover:scale-110 transition-transform">
-                    <div class="w-2 h-2 rounded-full bg-[#5B8DB8]"></div>
-                  </div>
-                  <p class="text-white/90 group-hover:text-white transition-colors">Every program is customized based on your goals, audience, and event needs.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  
 
-    <!-- SLIDE 19: Onsite Apparel Pop-Up -->
-    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
-      <div class="w-full min-h-screen relative overflow-hidden bg-[#1A1A1A]">
-        <!-- Pure Background Image & Overlay -->
-        <div class="absolute inset-0">
-          <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1920&q=100" alt="Apparel pop-up" class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/95 via-[#1A1A1A]/80 to-transparent"></div>
-        </div>
-        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
-          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
-          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
-          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
-        </div>
-        <!-- Foreground Content -->
-        <div class="relative z-10 w-full min-h-screen flex items-center">
-          <div class="w-full max-w-7xl mx-auto px-8 md:px-16 py-20 grid lg:grid-cols-2 gap-16 items-center">
-            <div class="animate-slide-right">
-              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 16</p>
-              <h2 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">Onsite Apparel<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Pop-Up</span></h2>
-              <p class="text-white/80 text-xl leading-relaxed mb-12">An immersive retail-inspired setting where guests explore and select curated branded apparel.</p>
-              <div class="grid sm:grid-cols-2 gap-4">
-                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
-                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <div>
-                    <p class="text-xs text-white/50 uppercase tracking-wider">Styles</p>
-                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Curated</p>
-                  </div>
-                </div>
-                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
-                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <div>
-                    <p class="text-xs text-white/50 uppercase tracking-wider">Inventory</p>
-                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Planned</p>
-                  </div>
-                </div>
-                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
-                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <div>
-                    <p class="text-xs text-white/50 uppercase tracking-wider">Branding</p>
-                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Optional</p>
-                  </div>
-                </div>
-                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
-                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <div>
-                    <p class="text-xs text-white/50 uppercase tracking-wider">Staffing</p>
-                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Included</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Foreground Collage -->
-            <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-left animation-delay-300">
-              <div class="col-span-2 overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&q=80" alt="Apparel pop-up" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-              </div>
-              <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1528892952291-009c663ce843?w=800&q=80" alt="Apparel rack" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-              </div>
-              <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=800&q=80" alt="Clothing store" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  
+   
 
-    <!-- SLIDE 20: Onsite Golf Events -->
-    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
-      <div class="w-full min-h-screen relative overflow-hidden">
-        <!-- Pure Background Image & Overlay -->
-        <div class="absolute inset-0">
-          <img src="https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=1920&q=100" alt="Golf events" class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/95 via-[#1A1A1A]/80 to-[#1A1A1A]/40"></div>
-        </div>
-        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
-          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
-          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
-          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
-        </div>
-        <!-- Foreground Content -->
-        <div class="relative z-10 w-full min-h-screen flex items-center">
-          <div class="w-full max-w-7xl mx-auto px-8 md:px-16 grid lg:grid-cols-2 gap-16 items-center">
-            <div class="animate-slide-right">
-              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 17</p>
-              <h2 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">Onsite<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Golf Events</span></h2>
-              <p class="text-white/80 text-lg leading-relaxed mb-10">An elevated retail-inspired experience featuring premium golf essentials: custom belt fittings, golf shoes, apparel, and more.</p>
-              <div class="grid grid-cols-2 gap-4">
-                <div class="group flex items-center gap-3 cursor-default bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
-                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <span class="text-white/80 group-hover:text-white transition-colors text-sm">Built per event</span>
-                </div>
-                <div class="group flex items-center gap-3 cursor-default bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
-                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <span class="text-white/80 group-hover:text-white transition-colors text-sm">Scalable size</span>
-                </div>
-                <div class="group flex items-center gap-3 cursor-default bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
-                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <span class="text-white/80 group-hover:text-white transition-colors text-sm">Creative direction</span>
-                </div>
-                <div class="group flex items-center gap-3 cursor-default bg-white/5 border border-white/10 p-4 rounded-xl hover:bg-white/10 transition-colors">
-                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <span class="text-white/80 group-hover:text-white transition-colors text-sm">Fully customizable</span>
-                </div>
-              </div>
-            </div>
-            <!-- Foreground Collage -->
-            <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-left animation-delay-300">
-              <div class="col-span-2 overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1593111774240-d529f12eb4d6?w=800&q=80" alt="Golf products" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-              </div>
-              <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=800&q=80" alt="Golf club" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-              </div>
-              <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1593111774640-1be64a856611?w=800&q=80" alt="Golf accessories" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 21: Onsite Engraving -->
-    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
-      <div class="w-full min-h-screen bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] flex items-center relative overflow-hidden">
-        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
-          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
-          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
-          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
-          <div class="absolute w-[100px] h-[100px] rounded-full border border-white/10 animate-float-medium" style="top:30%;right:15%"></div>
-          <div class="absolute w-[250px] h-[250px] rounded-full border border-white/10 animate-float-slow" style="bottom:-5%;right:30%"></div>
-        </div>
-        <div class="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 py-20">
-          <div class="grid lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 bg-gradient-to-br from-[#2A2A2A] to-[#1A1A1A] p-8 lg:p-12 rounded-2xl border border-white/10 animate-slide-right">
-              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 18</p>
-              <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">Onsite<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Engraving</span></h2>
-              <p class="text-white/70 text-lg leading-relaxed mb-10 max-w-xl">Personalize premium products with custom names, initials, or meaningful details, creating a unique keepsake in real time.</p>
-              <div class="grid sm:grid-cols-2 gap-4">
-                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
-                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Efficiency</p>
-                  <p class="text-sm text-white/50">Multiple engravers per event</p>
-                </div>
-                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
-                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Expertise</p>
-                  <p class="text-sm text-white/50">Professional artisans onsite</p>
-                </div>
-                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
-                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Pre-Plan</p>
-                  <p class="text-sm text-white/50">Sandblasted logos available</p>
-                </div>
-                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
-                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Turnkey</p>
-                  <p class="text-sm text-white/50">Fully managed setup</p>
-                </div>
-              </div>
-            </div>
-            <div class="relative rounded-2xl overflow-hidden animate-slide-left animation-delay-300 group">
-              <img src="https://images.pexels.com/photos/7254467/pexels-photo-7254467.jpeg?w=1920&q=100" alt="Engraving" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-              <div class="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/80 to-transparent"></div>
-              <div class="absolute bottom-6 left-6 right-6">
-                <p class="text-sm tracking-widest text-white/70 uppercase">Live Engraving</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 22: On-site Printing Gallery -->
-    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
-      <div class="w-full min-h-screen bg-gradient-to-br from-[#1A1A1A] to-[#2A2A2A] flex items-center relative overflow-hidden">
-        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
-          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
-          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
-          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
-          <div class="absolute w-[100px] h-[100px] rounded-full border border-white/10 animate-float-medium" style="top:30%;right:15%"></div>
-          <div class="absolute w-[250px] h-[250px] rounded-full border border-white/10 animate-float-slow" style="bottom:-5%;right:30%"></div>
-        </div>
-        <div class="relative z-10 w-full max-w-7xl mx-auto px-8 md:px-16 py-20">
-          <div class="grid lg:grid-cols-3 gap-8">
-            <div class="lg:col-span-2 bg-gradient-to-br from-[#2A2A2A] to-[#1A1A1A] p-8 lg:p-12 rounded-2xl border border-white/10 animate-slide-right">
-              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 19</p>
-              <h2 class="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">On-site<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Printing Gallery</span></h2>
-              <p class="text-white/70 text-lg leading-relaxed mb-10 max-w-xl">Gallery slide showing examples and photos of onsite screen printing and live customization setups in action.</p>
-              <div class="grid sm:grid-cols-2 gap-4">
-                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
-                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Visuals</p>
-                  <p class="text-sm text-white/50">High-end setups</p>
-                </div>
-                <div class="group p-5 bg-[#1A1A1A] border-l-2 border-[#5B8DB8] hover:border-l-4 hover:bg-[#5B8DB8]/10 transition-all duration-300">
-                  <p class="text-2xl font-bold text-white group-hover:text-[#5B8DB8] transition-colors mb-1">Action</p>
-                  <p class="text-sm text-white/50">Live printing demonstrations</p>
-                </div>
-              </div>
-            </div>
-            <div class="relative rounded-2xl overflow-hidden animate-slide-left animation-delay-300 group">
-              <img src="https://images.unsplash.com/photo-1562564055-71e051d33c19?w=1920&q=100" alt="Printing Gallery" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-              <div class="absolute inset-0 bg-gradient-to-t from-[#1A1A1A]/80 to-transparent"></div>
-              <div class="absolute bottom-6 left-6 right-6">
-                <p class="text-sm tracking-widest text-white/70 uppercase">Event Activations</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 23: Embroidery Stitching -->
-    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
-      <div class="w-full min-h-screen bg-gradient-to-br from-[#F8F7F4] via-[#F8F7F4] to-[#E5E3DE] relative overflow-hidden">
-        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
-          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
-          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
-          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
-          <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
-          <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
-        </div>
-        <div class="relative z-10 w-full min-h-screen flex items-center">
-          <div class="w-full max-w-7xl mx-auto px-8 md:px-16 grid lg:grid-cols-2 gap-16 items-center">
-            <div class="py-20">
-              <div class="flex items-center gap-4 mb-8 animate-slide-right">
-                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center shadow-lg">
-                  <span class="text-sm font-bold text-white">20</span>
-                </div>
-                <span class="text-sm font-medium tracking-widest text-[#999999] uppercase">Experience</span>
-              </div>
-              <h2 class="text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-6 leading-tight animate-slide-right animation-delay-200">Embroidery<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Stitching</span></h2>
-              <p class="text-[#666666] text-lg leading-relaxed mb-10 animate-slide-right animation-delay-300">Live embroidery activation where attendees personalize apparel and accessories with stitched designs and names.</p>
-              <div class="grid grid-cols-2 gap-3 animate-slide-right animation-delay-400">
-                <div class="group flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300">
-                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <span class="text-sm font-medium text-[#1A1A1A]">Live Stitching</span>
-                </div>
-                <div class="group flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300">
-                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <span class="text-sm font-medium text-[#1A1A1A]">Custom Names</span>
-                </div>
-                <div class="group flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300">
-                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <span class="text-sm font-medium text-[#1A1A1A]">Logo Designs</span>
-                </div>
-                <div class="group flex items-center gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-lg hover:scale-105 transition-all duration-300">
-                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <span class="text-sm font-medium text-[#1A1A1A]">Apparel &amp; Accessories</span>
-                </div>
-              </div>
-            </div>
-            <div class="relative animate-slide-left animation-delay-300">
-              <div class="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl group">
-                <img src="https://images.unsplash.com/photo-1620783770629-122b7f187703?w=1920&q=100" alt="Embroidery Stitching" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-              </div>
-              <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] rounded-xl -z-10"></div>
-              <div class="absolute -top-6 -left-6 w-24 h-24 border-2 border-[#5B8DB8]/30 rounded-xl -z-10"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 24: Laser Engraving -->
-    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
-      <div class="w-full h-screen relative overflow-hidden bg-[#1A1A1A]">
-        <!-- Pure Background Image & Overlay -->
-        <div class="absolute inset-0">
-          <img src="https://images.unsplash.com/photo-1612403211516-fb15bb02e260?w=1920&q=100" alt="Laser Engraving" class="w-full h-full object-cover object-center">
-          <div class="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-[#1A1A1A]/90 to-[#1A1A1A]/80"></div>
-          <div class="absolute inset-0 bg-gradient-to-r from-[#5B8DB8]/20 to-transparent"></div>
-        </div>
-        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
-          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
-          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
-          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
-        </div>
-        <!-- Foreground Content -->
-        <div class="relative z-10 w-full h-full flex items-center justify-center px-8 md:px-16">
-          <div class="w-full max-w-7xl grid lg:grid-cols-2 gap-16 items-center">
-            <div class="bg-black/40 backdrop-blur-md border border-white/10 p-8 lg:p-10 shadow-2xl rounded-2xl animate-slide-right">
-              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-3">Experience 21</p>
-              <h2 class="text-3xl lg:text-5xl font-bold text-white mb-4 leading-tight">Laser<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Engraving</span></h2>
-              <p class="text-white/70 text-base leading-relaxed mb-8">Onsite laser engraving experience for premium items such as wallets, tumblers, tags, and accessories.</p>
-              <div class="space-y-4">
-                <div class="group flex items-center gap-4 cursor-default">
-                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
-                    <span class="text-sm font-bold text-white">1</span>
-                  </div>
-                  <div>
-                    <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Precision Focus</p>
-                    <p class="text-sm text-white/50">High quality laser detailing</p>
-                  </div>
-                </div>
-                <div class="group flex items-center gap-4 cursor-default">
-                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
-                    <span class="text-sm font-bold text-white">2</span>
-                  </div>
-                  <div>
-                    <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Wide Range</p>
-                    <p class="text-sm text-white/50">Works on multiple materials</p>
-                  </div>
-                </div>
-                <div class="group flex items-center gap-4 cursor-default">
-                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
-                    <span class="text-sm font-bold text-white">3</span>
-                  </div>
-                  <div>
-                    <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Take Home Gift</p>
-                    <p class="text-sm text-white/50">Memorable custom items</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Foreground Collage -->
-            <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-left animation-delay-300">
-              <div class="col-span-2 overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1506461816223-1cce811c76ba?w=800&q=80" alt="Laser working" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-              </div>
-              <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1612403211516-fb15bb02e260?w=800&q=80" alt="Laser Engraving" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-              </div>
-              <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1592078615290-033ee584e267?w=800&q=80" alt="Engraved wood" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 25: Heat Transfers -->
-    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
-      <div class="w-full h-screen bg-[#F8F7F4] relative overflow-hidden">
-        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
-          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
-          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
-          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
-          <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
-          <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
-        </div>
-        <div class="w-full h-full grid lg:grid-cols-2">
-          <!-- Foreground Collage as Left Column -->
-          <div class="relative h-full w-full grid grid-cols-2 grid-rows-2 gap-1 overflow-hidden animate-slide-right">
-            <div class="col-span-2 relative overflow-hidden group">
-               <img src="https://images.unsplash.com/photo-1572916183615-1815e1cb2a0d?w=800&q=80" alt="Heat Transfers" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-            </div>
-            <div class="relative overflow-hidden group">
-               <img src="https://images.unsplash.com/photo-1563203369-26f2e4a5ccf7?w=800&q=80" alt="Apparel" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-            </div>
-            <div class="relative overflow-hidden group">
-               <img src="https://images.unsplash.com/photo-1589310243389-96a5483213a8?w=800&q=80" alt="Custom patch" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-            </div>
-            <div class="absolute top-8 left-8 bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] text-white px-5 py-2.5 rounded-full shadow-lg z-10">
-              <p class="text-sm font-medium tracking-wider">Live Customization</p>
-            </div>
-          </div>
-          <div class="flex items-center px-8 lg:px-12 py-10 bg-gradient-to-br from-[#F8F7F4] to-[#EBE9E4]">
-            <div class="max-w-md w-full">
-              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-4 animate-slide-left">Experience 22</p>
-              <h2 class="text-3xl lg:text-4xl font-bold text-[#1A1A1A] mb-4 leading-tight animate-slide-left animation-delay-200">Heat<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Transfers</span></h2>
-              <p class="text-[#666666] text-base leading-relaxed mb-6 animate-slide-left animation-delay-300">Heat transfer apparel customization experience with patches, graphics, and branding applied onsite.</p>
-              <div class="space-y-2 animate-slide-left animation-delay-400">
-                <div class="group flex justify-between py-3 border-b border-[#E5E3DE] hover:border-[#5B8DB8] transition-colors cursor-default">
-                  <span class="text-[#666666] text-sm group-hover:text-[#1A1A1A] transition-colors">Style</span>
-                  <span class="font-semibold text-[#1A1A1A] text-sm group-hover:text-[#5B8DB8] transition-colors">Apparel &amp; Accessories</span>
-                </div>
-                <div class="group flex justify-between py-3 border-b border-[#E5E3DE] hover:border-[#5B8DB8] transition-colors cursor-default">
-                  <span class="text-[#666666] text-sm group-hover:text-[#1A1A1A] transition-colors">Elements</span>
-                  <span class="font-semibold text-[#1A1A1A] text-sm group-hover:text-[#5B8DB8] transition-colors">Patches &amp; Graphics</span>
-                </div>
-                <div class="group flex justify-between py-3 border-b border-[#E5E3DE] hover:border-[#5B8DB8] transition-colors cursor-default">
-                  <span class="text-[#666666] text-sm group-hover:text-[#1A1A1A] transition-colors">Speed</span>
-                  <span class="font-semibold text-[#1A1A1A] text-sm group-hover:text-[#5B8DB8] transition-colors">Fast Turnaround</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 26: Product Printing -->
-    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
-      <div class="w-full min-h-screen relative overflow-hidden bg-[#1A1A1A]">
-        <!-- Pure BG + Overlay -->
-        <div class="absolute inset-0">
-          <img src="https://images.unsplash.com/photo-1623018035782-b269248df916?w=1920&q=100" alt="Product Printing" class="w-full h-full object-cover">
-          <div class="absolute inset-0 bg-gradient-to-r from-[#1A1A1A]/95 via-[#1A1A1A]/80 to-transparent"></div>
-        </div>
-        <div class="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-br from-[#5B8DB8]/80 to-[#4A7CA6]/80 clip-diagonal-reverse"></div>
-        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
-          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
-          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
-          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
-        </div>
-        <!-- Foreground Content -->
-        <div class="relative z-10 w-full min-h-screen flex items-center">
-          <div class="w-full max-w-7xl mx-auto px-8 md:px-16 py-20 grid lg:grid-cols-2 gap-16 items-center">
-            <div class="animate-slide-right">
-              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-6">Experience 23</p>
-              <h2 class="text-4xl lg:text-6xl font-bold text-white mb-6 leading-tight">Product<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#7BA3C9] bg-clip-text text-transparent">Printing</span></h2>
-              <p class="text-white/80 text-xl leading-relaxed mb-12">Live product printing activation for tote bags, bottles, gift items, and promotional products.</p>
-              <div class="grid sm:grid-cols-2 gap-4">
-                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
-                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <div>
-                    <p class="text-xs text-white/50 uppercase tracking-wider">Totes</p>
-                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Customized</p>
-                  </div>
-                </div>
-                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
-                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <div>
-                    <p class="text-xs text-white/50 uppercase tracking-wider">Bottles</p>
-                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Printed Live</p>
-                  </div>
-                </div>
-                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
-                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <div>
-                    <p class="text-xs text-white/50 uppercase tracking-wider">Branding</p>
-                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Enhanced</p>
-                  </div>
-                </div>
-                <div class="group flex items-center gap-4 p-5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-[#5B8DB8]/50 transition-all duration-300 cursor-default">
-                  <div class="w-3 h-3 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <div>
-                    <p class="text-xs text-white/50 uppercase tracking-wider">Execution</p>
-                    <p class="text-white font-medium group-hover:text-[#5B8DB8] transition-colors">Flawless</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Foreground Collage nested within the clip diagonal effect visually -->
-            <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-left animation-delay-300">
-              <div class="col-span-2 overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1623018035782-b269248df916?w=800&q=80" alt="Product Printing" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-              </div>
-              <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1583337130417-3346a1be7dee?w=800&q=80" alt="Screen print" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-              </div>
-              <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1558097962-431872110c73?w=800&q=80" alt="Tote bag" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SLIDE 27: Garment Printing -->
-    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
-      <div class="w-full h-screen relative overflow-hidden bg-[#1A1A1A]">
-        <!-- Pure Background Image & Overlay -->
-        <div class="absolute inset-0">
-          <img src="https://images.unsplash.com/photo-1581327660600-b6f7091bd35c?w=1920&q=100" alt="Garment Printing" class="w-full h-full object-cover object-center">
-          <div class="absolute inset-0 bg-gradient-to-t from-[#1A1A1A] via-[#1A1A1A]/90 to-[#1A1A1A]/80"></div>
-          <div class="absolute inset-0 bg-gradient-to-r from-[#5B8DB8]/20 to-transparent"></div>
-        </div>
-        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle z-0">
-          <div class="absolute w-[300px] h-[300px] rounded-full border border-white/10 animate-float-slow" style="top:10%;left:-5%"></div>
-          <div class="absolute w-[200px] h-[200px] rounded-full border border-white/10 animate-float-medium" style="top:60%;right:-3%"></div>
-          <div class="absolute w-[150px] h-[150px] rounded-full border border-white/10 animate-float-fast" style="bottom:20%;left:10%"></div>
-        </div>
-        <!-- Foreground Content -->
-        <div class="relative z-10 w-full h-full flex items-center justify-center px-8 md:px-16">
-          <div class="w-full max-w-7xl grid lg:grid-cols-2 gap-16 items-center">
-            <div class="bg-black/40 backdrop-blur-md border border-white/10 p-8 lg:p-10 shadow-2xl rounded-2xl animate-slide-right">
-              <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-3">Experience 24</p>
-              <h2 class="text-3xl lg:text-5xl font-bold text-white mb-4 leading-tight">Garment<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Printing</span></h2>
-              <p class="text-white/70 text-base leading-relaxed mb-8">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam.</p>
-              <div class="space-y-4">
-                <div class="group flex items-center gap-4 cursor-default">
-                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
-                    <span class="text-sm font-bold text-white">1</span>
-                  </div>
-                  <div>
-                    <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Dolor Sit Amet</p>
-                    <p class="text-sm text-white/50">Consectetur adipiscing elit</p>
-                  </div>
-                </div>
-                <div class="group flex items-center gap-4 cursor-default">
-                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
-                    <span class="text-sm font-bold text-white">2</span>
-                  </div>
-                  <div>
-                    <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Sed Do Eiusmod</p>
-                    <p class="text-sm text-white/50">Tempor incididunt ut labore</p>
-                  </div>
-                </div>
-                <div class="group flex items-center gap-4 cursor-default">
-                  <div class="w-12 h-12 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform shadow-lg">
-                    <span class="text-sm font-bold text-white">3</span>
-                  </div>
-                  <div>
-                    <p class="font-semibold text-white text-base group-hover:text-[#5B8DB8] transition-colors">Magna Aliqua</p>
-                    <p class="text-sm text-white/50">Ut enim ad minim veniam</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <!-- Foreground Collage -->
-            <div class="grid grid-cols-2 grid-rows-2 gap-4 h-[500px] animate-slide-left animation-delay-300">
-              <div class="col-span-2 overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1581327660600-b6f7091bd35c?w=800&q=80" alt="Garment Printing 1" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-              </div>
-              <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1529374255404-311a2a4f1fd9?w=800&q=80" alt="Garment Printing 2" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-              </div>
-              <div class="overflow-hidden rounded-2xl shadow-2xl">
-                <img src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800&q=80" alt="Garment Printing 3" class="w-full h-full object-cover hover:scale-110 transition-transform duration-700">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    
+   
 
     <!-- SLIDE 28: Onsite Printing Options -->
     <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
@@ -1634,67 +2182,7 @@
       </div>
     </div>
 
-    <!-- SLIDE 29: Live Stamping -->
-    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
-      <div class="w-full min-h-screen bg-gradient-to-br from-[#F8F7F4] to-[#EBE9E4] flex items-center relative overflow-hidden">
-        <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
-          <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
-          <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
-          <div class="absolute w-[150px] h-[150px] rounded-full border border-[#5B8DB8]/20 animate-float-fast" style="bottom:20%;left:10%"></div>
-          <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
-          <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
-        </div>
-        <div class="w-full h-full grid lg:grid-cols-2">
-          <div class="flex items-center px-8 lg:px-16 py-20 relative z-10">
-            <div class="max-w-xl animate-slide-right">
-              <div class="inline-flex items-center gap-3 mb-6">
-                <div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center shadow-lg">
-                  <span class="text-sm font-bold text-white">26</span>
-                </div>
-                <span class="text-sm font-medium tracking-widest text-[#999999] uppercase">Experience</span>
-              </div>
-              <h2 class="text-4xl lg:text-5xl font-bold text-[#1A1A1A] mb-6 leading-tight">Live<br><span class="bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] bg-clip-text text-transparent">Stamping</span></h2>
-              <p class="text-[#666666] text-lg leading-relaxed mb-8">Leather stamping activation using custom initials and logos with foil and embossing options.</p>
-              <div class="space-y-3 mb-8">
-                <div class="group flex items-center gap-3 text-[#666666] hover:text-[#1A1A1A] transition-colors cursor-default">
-                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <span>Foil embossing available</span>
-                </div>
-                <div class="group flex items-center gap-3 text-[#666666] hover:text-[#1A1A1A] transition-colors cursor-default">
-                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <span>Initials and logos supported</span>
-                </div>
-                <div class="group flex items-center gap-3 text-[#666666] hover:text-[#1A1A1A] transition-colors cursor-default">
-                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <span>Premium leather goods</span>
-                </div>
-                <div class="group flex items-center gap-3 text-[#666666] hover:text-[#1A1A1A] transition-colors cursor-default">
-                  <div class="w-2 h-2 rounded-full bg-[#5B8DB8] group-hover:scale-150 transition-transform"></div>
-                  <span>Turnkey live station</span>
-                </div>
-              </div>
-              <div class="inline-block p-6 bg-gradient-to-r from-[#5B8DB8] to-[#4A7CA6] rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300 cursor-default">
-                <p class="text-white/80 text-sm mb-1">Experience</p>
-                <p class="text-2xl font-bold text-white">Classic Luxury</p>
-              </div>
-            </div>
-          </div>
-          <!-- Split Foreground Collage Right Side -->
-          <div class="relative h-full w-full grid grid-cols-2 grid-rows-2 gap-1 overflow-hidden animate-slide-left">
-            <div class="col-span-2 relative overflow-hidden group">
-               <img src="https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?w=800&q=80" alt="Live Stamping" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-            </div>
-            <div class="relative overflow-hidden group">
-               <img src="https://images.unsplash.com/photo-1625804618797-009d73fc751a?w=800&q=80" alt="Leather" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-            </div>
-            <div class="relative overflow-hidden group">
-               <img src="https://images.unsplash.com/photo-1580870059868-faa411bbdce2?w=800&q=80" alt="Stamping tools" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
+  
     <!-- SLIDE 30: Live Printing -->
     <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
       <div class="w-full min-h-screen bg-gradient-to-br from-[#F8F7F4] via-[#F8F7F4] to-[#E5E3DE] flex items-center relative overflow-hidden">
