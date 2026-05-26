@@ -510,33 +510,72 @@
       </div>
     </div>
 
-    <!-- SLIDE 05: Character Creations Video (Image-focused slide – no visible title) -->
-<!-- SLIDE 05: Character Creations Video Slide -->
-    <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
+  <!-- SLIDE 05: Character Creations Video Slide with Custom Unmute Button -->
+    <div class="slide-item absolute inset-0 w-full h-full transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
       <div class="w-full h-screen relative overflow-hidden bg-black flex items-center justify-center">
         
-        <!-- Full Screen Responsive Embedded Video -->
+        <!-- Native Video Element -->
         <div class="absolute inset-0 z-0">
-          <iframe 
-            src="https://jmalogos.sharepoint.com/sites/BusinessDevelopment/_layouts/15/embed.aspx?UniqueId=98302aee-fd83-4d8c-bd55-07db87b41dac&embed=%7B%22ust%22%3Atrue%2C%22hv%22%3A%22CopyEmbedCode%22%7D&referrer=StreamWebApp&referrerScenario=EmbedDialog.Create" 
-            style="border: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;" 
-            scrolling="no" 
-            allowfullscreen 
-            title="Swanky On-Site Caricature Creations">
-          </iframe>
+          <video 
+            id="caricature-video"
+            autoplay 
+            loop 
+            muted 
+            playsinline 
+            controls
+            class="w-full h-full object-cover"
+            style="opacity: 0.85; filter: contrast(1.05);"
+          >
+            <source src="https://raw.githubusercontent.com/iemrenzh-dev/Swanky-On-Site-Caricature-Creations/aefbae6f8019b2cfcccbc28c3ace51d0e08f6703/Swanky-On-Site-Caricature-Creations-%20(1).mp4" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
           
-          <!-- Subtle top & bottom shadow overlays that do not block interactions with the video player controls -->
-          <div class="absolute top-0 inset-x-0 h-24 bg-gradient-to-b from-black/60 to-transparent pointer-events-none"></div>
-          <div class="absolute bottom-0 inset-x-0 h-32 bg-gradient-to-t from-black/80 to-transparent pointer-events-none"></div>
+          <!-- Gradient overlay for text legibility -->
+          <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none"></div>
         </div>
 
-        <!-- Floating Slide Label (Overlays cleanly in the bottom-left corner) -->
+        <!-- Sleek Floating Unmute Button Overlay -->
+        <button 
+          id="custom-unmute-btn"
+          onclick="toggleVideoMute()" 
+          class="absolute top-24 right-12 z-20 pointer-events-auto flex items-center gap-2 bg-black/60 hover:bg-black/80 text-white px-4 py-2.5 rounded-full border border-white/20 hover:scale-105 transition-all duration-300"
+        >
+          <!-- Dynamic Mute/Unmute SVG Icon -->
+          <svg id="mute-svg" class="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z" />
+            <path id="mute-lines" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2" />
+          </svg>
+          <span id="mute-label" class="text-sm font-semibold tracking-wide uppercase">Unmute</span>
+        </button>
+
+        <!-- Floating Slide Label -->
         <div class="absolute bottom-16 left-12 z-10 animate-slide-up animation-delay-200 pointer-events-none">
           <p class="text-sm font-medium tracking-[0.3em] text-[#5B8DB8] uppercase mb-2">Live Action</p>
           <p class="text-white text-2xl lg:text-4xl font-bold">Character Creations Experience</p>
         </div>
         
       </div>
+
+      <!-- Inline Unmute Logic Script -->
+      <script>
+        function toggleVideoMute() {
+          const video = document.getElementById('caricature-video');
+          const label = document.getElementById('mute-label');
+          const lines = document.getElementById('mute-lines');
+          
+          if (video.muted) {
+            video.muted = false;
+            label.textContent = "Mute";
+            // Swap SVG path to represent speaker sound waves
+            lines.setAttribute("d", "M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728");
+          } else {
+            video.muted = true;
+            label.textContent = "Unmute";
+            // Swap SVG path back to represent "X" mute symbol
+            lines.setAttribute("d", "M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2");
+          }
+        }
+      </script>
     </div>
 
     <!-- SLIDE 06: Custom Shoe Activation -->
