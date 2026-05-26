@@ -926,9 +926,10 @@
       </div>
     </div>
 
-     <!-- SLIDE 09: Sunglasses Experience -->
+   <!-- SLIDE 10: Sunglasses Experience -->
     <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
       <div class="w-full min-h-screen bg-gradient-to-br from-[#F8F7F4] via-[#F8F7F4] to-[#E5E3DE] relative overflow-hidden">
+        
         <div class="absolute inset-0 overflow-hidden pointer-events-none floating-circle">
           <div class="absolute w-[300px] h-[300px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="top:10%;left:-5%"></div>
           <div class="absolute w-[200px] h-[200px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:60%;right:-3%"></div>
@@ -936,8 +937,10 @@
           <div class="absolute w-[100px] h-[100px] rounded-full border border-[#5B8DB8]/20 animate-float-medium" style="top:30%;right:15%"></div>
           <div class="absolute w-[250px] h-[250px] rounded-full border border-[#5B8DB8]/20 animate-float-slow" style="bottom:-5%;right:30%"></div>
         </div>
+
         <div class="relative z-10 w-full min-h-screen flex items-center">
           <div class="w-full max-w-7xl mx-auto px-8 md:px-16 grid lg:grid-cols-2 gap-16 items-center">
+            
             <div class="py-20">
               <div class="flex items-center gap-4 mb-8 animate-slide-right">
                 <div class="w-14 h-14 rounded-full bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] flex items-center justify-center shadow-lg">
@@ -966,18 +969,127 @@
                 </div>
               </div>
             </div>
-            <div class="relative animate-slide-left animation-delay-300">
-              <div class="aspect-[4/5] rounded-2xl overflow-hidden shadow-2xl group">
-                <img src="https://images.mauijim.com/content-images/homepage/banner/ultra-g-martin-mobile-v2.jpg?w=1920&q=100" alt="Sunglasses" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-              </div>
+
+            <!-- Right Column - Kept exact layout and decorators, updated inner image to collage -->
+            <div class="relative animate-slide-left animation-delay-300 z-10 w-full flex justify-center">
+              
+              <!-- Original Background Decorators Kept Intact -->
               <div class="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-[#5B8DB8] to-[#4A7CA6] rounded-xl -z-10"></div>
               <div class="absolute -top-6 -left-6 w-24 h-24 border-2 border-[#5B8DB8]/30 rounded-xl -z-10"></div>
+
+              <!-- Scoped CSS for Sunglasses Collage Animations -->
+              <style>
+                .sunglasses-collage-card-container {
+                  opacity: 0;
+                  transform: translateY(20px);
+                  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+                }
+                .sunglasses-collage-main-img {
+                  opacity: 0;
+                  transform: scale(0.95) translateY(20px);
+                  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+                }
+                .sunglasses-collage-left-img {
+                  opacity: 0;
+                  transform: scale(0.95) translateY(25px);
+                  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+                }
+                .sunglasses-collage-right-img {
+                  opacity: 0;
+                  transform: scale(0.95) translateY(25px);
+                  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease-out;
+                }
+
+                .slide-item.is-active .sunglasses-collage-card-container {
+                  opacity: 1;
+                  transform: translateY(0);
+                  animation: sunglassesIdleFloat 6s ease-in-out infinite;
+                  animation-delay: 1.4s;
+                }
+                .slide-item.is-active .sunglasses-collage-main-img {
+                  opacity: 1;
+                  transform: scale(1) translateY(0);
+                  transition-delay: 150ms;
+                }
+                .slide-item.is-active .sunglasses-collage-left-img {
+                  opacity: 1;
+                  transform: scale(1) translateY(0);
+                  transition-delay: 300ms;
+                }
+                .slide-item.is-active .sunglasses-collage-right-img {
+                  opacity: 1;
+                  transform: scale(1) translateY(0);
+                  transition-delay: 450ms;
+                }
+
+                .sunglasses-collage-img-wrapper {
+                  overflow: hidden;
+                  position: relative;
+                  cursor: pointer;
+                }
+                .sunglasses-collage-img-wrapper img {
+                  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+                }
+                .sunglasses-collage-img-wrapper:hover img {
+                  transform: scale(1.05);
+                }
+                .sunglasses-collage-overlay-layer {
+                  position: absolute;
+                  inset: 0;
+                  transition: background-color 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+                  pointer-events: none;
+                }
+                .sunglasses-collage-img-wrapper:hover .sunglasses-collage-overlay-layer {
+                  background-color: transparent !important;
+                }
+
+                @keyframes sunglassesIdleFloat {
+                  0%, 100% { transform: translateY(0); }
+                  50% { transform: translateY(-6px); }
+                }
+              </style>
+
+              <!-- 3-Image Collage Grid replacing the single image -->
+              <div class="sunglasses-collage-card-container" 
+                   style="position: relative; width: 100%; max-width: 500px; display: flex; flex-direction: column; gap: 8px; box-sizing: border-box; background-color: rgba(255,255,255,0.7); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 10px; border-radius: 20px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);">
+                
+                <!-- Hero Image (Top - Rectangle) -->
+                <div class="sunglasses-collage-main-img sunglasses-collage-img-wrapper" style="width: 100%; aspect-ratio: 4 / 3; border-radius: 14px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
+                  <img src="https://i.ibb.co/nNCcRR8z/Sunglasses.webp?w=800&q=100" 
+                       alt="Sunglasses Experience" 
+                       style="width: 100%; height: 100%; object-fit: cover; object-position: top;">
+                  <div style="position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.1), transparent); pointer-events: none;"></div>
+                </div>
+                
+                <!-- Bottom Row (Two Squares) -->
+                <div style="width: 100%; display: flex; gap: 8px;">
+                  
+                  <!-- Detail 1 (Bottom Left) -->
+                  <div class="sunglasses-collage-left-img sunglasses-collage-img-wrapper" style="width: calc(50% - 4px); aspect-ratio: 1 / 1; border-radius: 14px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
+                    <img src="https://images.mauijim.com/content-images/homepage/banner/ultra-g-martin-mobile-v2.jpg?w=600&q=80" 
+                         alt="Curated sunglasses layout" 
+                         style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="sunglasses-collage-overlay-layer" style="background-color: rgba(91, 141, 184, 0.1);"></div>
+                  </div>
+                  
+                  <!-- Detail 2 (Bottom Right) -->
+                  <div class="sunglasses-collage-right-img sunglasses-collage-img-wrapper" style="width: calc(50% - 4px); aspect-ratio: 1 / 1; border-radius: 14px; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
+                    <img src="https://i.ibb.co/s97Czqfm/Copy-of-IMG-7616-scaled.jpg?w=600&q=80" 
+                         alt="Sunglasses fitting" 
+                         style="width: 100%; height: 100%; object-fit: cover;">
+                    <div class="sunglasses-collage-overlay-layer" style="background-color: rgba(91, 141, 184, 0.1);"></div>
+                  </div>
+                  
+                </div>
+                
+              </div>
+
             </div>
+
           </div>
         </div>
       </div>
     </div>
-
   <!-- SLIDE 10: Custom Scented Candle -->
     <div class="slide-item absolute inset-0 w-full min-h-screen transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 translate-y-12 scale-95 z-0 pointer-events-none">
       <div class="w-full h-screen bg-gradient-to-br from-[#F8F7F4] via-[#F8F7F4] to-[#E5E3DE] relative overflow-hidden">
@@ -1036,7 +1148,7 @@
           
           <!-- Image Column -->
           <div class="relative h-full overflow-hidden animate-slide-left animation-delay-300">
-            <img src="https://www.inluro.com/cdn/shop/files/Agave_White_Candle_Inluro.jpg?v=1747930835&width=1080?w=1920&q=100" alt="Premium candle curation" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
+            <img src="https://i.ibb.co/F19DL4h/Custom-Candle.webp?v=1747930835&width=1080?w=1920&q=100" alt="Premium candle curation" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700">
             <div class="absolute inset-0 bg-gradient-to-l from-transparent to-[#F8F7F4]/20"></div>
           </div>
         </div>
