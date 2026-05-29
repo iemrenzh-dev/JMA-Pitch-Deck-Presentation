@@ -27,6 +27,96 @@
       }
     }
   </script>
+  <style media="print">
+  * { animation: none !important; transition: none !important; }
+  
+  body { background: white !important; overflow: visible !important; }
+  
+  #global-ui { display: none !important; }
+  
+  #slider {
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+  
+  .slide-item {
+    position: relative !important;
+    display: block !important;
+    opacity: 1 !important;
+    transform: none !important;
+    width: 100% !important;
+    height: 100vh !important;
+    page-break-after: always !important;
+    break-after: page !important;
+    overflow: hidden !important;
+    pointer-events: none !important;
+    z-index: auto !important;
+  }
+
+  .slide-item > div {
+    height: 100vh !important;
+    min-height: unset !important;
+  }
+
+  /* Force all animated content visible */
+  .slide-item .animate-slide-up,
+  .slide-item .animate-slide-left,
+  .slide-item .animate-slide-right {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  /* Force all scoped collage elements visible */
+  .collage-card-container,
+  .collage-main-img,
+  .collage-left-img,
+  .collage-right-img,
+  .collage-badge,
+  .sock-collage-card-container,
+  .sock-collage-main-img,
+  .sock-collage-left-img,
+  .sock-collage-right-img,
+  .sunglasses-collage-card-container,
+  .sunglasses-collage-main-img,
+  .sunglasses-collage-left-img,
+  .sunglasses-collage-right-img,
+  .kendra-single-card-container,
+  .kendra-single-main-img,
+  .harimari-single-card-container,
+  .harimari-single-main-img,
+  .tecovas-single-card-container,
+  .tecovas-single-main-img,
+  .stitch-collage-card-container,
+  .stitch-collage-main-img,
+  .stitch-collage-left-img,
+  .stitch-collage-right-img,
+  .stamp-collage-card-container,
+  .stamp-collage-main-img,
+  .stamp-collage-left-img,
+  .stamp-collage-right-img,
+  .frame-collage-card-container,
+  .frame-collage-main-img,
+  .frame-collage-left-img,
+  .frame-collage-right-img,
+  .monogram-collage-card-container,
+  .monogram-collage-left-img,
+  .monogram-collage-right-img,
+  .sole-collage-card-container,
+  .sole-collage-main-img,
+  .sole-collage-left-img,
+  .sole-collage-right-img,
+  .tattoo-collage-card-container,
+  .tattoo-collage-main-img,
+  .tattoo-collage-left-img,
+  .tattoo-collage-right-img,
+  .custom-collage-wrapper {
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+
+  }
+</style>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: #1A1A1A; overflow: hidden; }
@@ -3451,6 +3541,26 @@
       let currentSlide = 0;
       let isAnimating = false;
 
+      // --- FIX FOR CTRL+P NATIVE PRINTING ---
+      window.addEventListener('beforeprint', () => {
+        // Strip out all gradient and clip classes right before the print dialog opens
+        document.querySelectorAll('.bg-clip-text').forEach(el => {
+          el.dataset.printClass = el.className;
+          el.className = el.className.replace(/bg-gradient-to-[a-z]+|from-\[.*?\]|via-\[.*?\]|to-\[.*?\]|bg-clip-text|text-transparent|animate-gradient/g, '');
+          el.style.color = '#5B8DB8'; // Fallback to solid blue
+        });
+      });
+
+      window.addEventListener('afterprint', () => {
+        // Restore all the original classes immediately after printing is done/cancelled
+        document.querySelectorAll('[data-print-class]').forEach(el => {
+          el.className = el.dataset.printClass;
+          el.style.color = '';
+          delete el.dataset.printClass;
+        });
+      });
+      // --------------------------------------
+
       // Map out whether a slide has a light background (requires dark dots) or dark background
       const isLightSlide = [false, false, true, false, false, false, true, false, true, true, true, true, false, false, true, true, true, false, false, false, false, false, true, false, true, false, false, false, true, true, false, false, true, false, true, false];
 
@@ -3630,17 +3740,11 @@
           el.style.setProperty('animation','none','important');
         }
 
-        function fixGradientText(doc) {
-          // Fix text-gradient spans (bg-clip-text + text-transparent on inline elements like <span>).
-          // These use background-image as a text colour trick — remove the background-image
-          // entirely and set a solid colour instead so they render correctly in html2canvas.
-          // We identify them by tag: they are always inline elements (span), never block buttons/divs.
-          doc.querySelectorAll('span.bg-clip-text, span.text-transparent').forEach(el => {
-            el.style.setProperty('color','#5B8DB8','important');
-            el.style.setProperty('-webkit-text-fill-color','#5B8DB8','important');
-            el.style.setProperty('background-image','none','important');
-            el.style.setProperty('background-clip','unset','important');
-            el.style.setProperty('-webkit-background-clip','unset','important');
+function fixGradientText(doc) {
+          doc.querySelectorAll('.bg-clip-text').forEach(el => {
+            // Strip the problematic classes from the cloned document
+            el.className = el.className.replace(/bg-gradient-to-[a-z]+|from-\[.*?\]|via-\[.*?\]|to-\[.*?\]|bg-clip-text|text-transparent|animate-gradient/g, '');
+            el.style.setProperty('color', '#5B8DB8', 'important');
           });
         }
 
